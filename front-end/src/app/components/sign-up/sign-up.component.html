@@ -1,0 +1,69 @@
+<br>
+<br>
+<br>
+<div class="container">
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+    <div class="card">
+
+        <header class="card-header">
+                <a routerLink="/sign-in" href="" class="float-right btn btn-outline-primary mt-1">Sign In</a>
+                <h4 class="card-title mt-2">Sign up</h4>
+        </header>
+
+        <article class="card-body">
+          
+           
+            <form #signUpForm="ngForm" (ngSubmit)="submit()" novalidate>
+
+            <!--username-->
+                <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" #username="ngModel" class="form-control " [class.is-invalid]="username.invalid && username.touched" placeholder="Perillo" name="username" [(ngModel)]="user.username" required>
+                        <span class="text-danger" [class.d-none]="username.valid || username.untouched">Username non valido</span>
+                </div> 
+            <!--role-->
+                <div class="form-row">
+                    <div class="form-group col-md-6 " >
+                    <label>Ruolo</label>
+                    <select class="form-control" #role="ngModel" name="role" [(ngModel)]="user.role" [class.is-invalid]="role.invalid && role.touched"required>
+                        <option>Cameriere</option>
+                        <option>Cuoco</option>
+                        <option>Cassa</option>
+                    </select>
+                    <span class="text-danger" [class.d-none]="role.valid || role.untouched">Devi selezionare un ruolo</span>
+                    </div>  
+                </div> 
+               
+                
+            <!--password-->
+                <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" #password="ngModel" class="form-control" placeholder="******" [class.is-invalid]="password.invalid && password.touched" name="password" [(ngModel)]="user.password" required>
+                        <span class="text-danger" [class.d-none]="password.valid || password.untouched">Password non valida</span>
+                </div> 
+            <!--confirmPassword-->
+            
+                <div class="form-group">
+                        <label>Conferma la password</label>
+                        <input type="password" #confirmPassword="ngModel" class="form-control"  [class.is-invalid]="(confirmPassword.invalid && confirmPassword.touched) || ( confirmPassword.touched && !passwordMatching())" placeholder="******" name="confirmPassword" [(ngModel)]="passwordConfirmation" required>
+                        <span class="text-danger" [class.d-none]="(password.valid && passwordMatching()) || confirmPassword.untouched">Le password non corrispondono</span>
+                </div> 
+            
+            <!--submitButton-->
+                <div class="form-group">
+                    <button [disabled]="signUpForm.form.invalid || !passwordMatching()" type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                </div>  
+
+                <small class="text-muted">Facendo click sul bottone 'Sign Up', stai confermado di accettare le nostre <br> Condizioni di Utilizzo e Privacy Policy.</small>                                          
+            </form>
+        </article> 
+        <div class="border-top card-body text-center">Possiedi già un account? <a routerLink="/sign-in" href="">Sign In</a></div>
+
+    </div> <!-- card.// -->
+    </div> <!-- col.//-->
+
+</div> <!-- row.//-->
+</div> 
+<!--container end.//-->
