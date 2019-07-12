@@ -24,7 +24,7 @@ export class ErrorsService implements HttpInterceptor {
         // The response body may contain clues as to what went wrong,
         console.error(
           `Backend returned code ${err.status}, ` +
-          `body was: ${err.error}`);
+          `body was: ${err}`);
       }
       // return an observable with a user-facing error message
       return throwError(err);

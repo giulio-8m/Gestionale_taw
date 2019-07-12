@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -9,23 +10,24 @@ import { User } from 'src/app/models/user';
 export class SignInComponent implements OnInit {
 
   public user:User;
+  public errorMessage;
 
-  constructor() { }
+  constructor(private auth:AuthService) { }
 
   ngOnInit() {
     this.user=new User();
-    console.log(this.user.username+" "+
-                this.user.password+" "+
-                this.user.role+" "+
-                this.user.admin);
-    this.user.canta();
+    this.errorMessage=null;
   }
 
   public submit(){
-    console.log(this.user.username+" "+
-                this.user.password+" "+
-                this.user.role+" "+
-                this.user.admin);
+    this.auth.signIn(this.user).subscribe(
+      (res) => { /* Nothing to do */ },
+      (error) => {
+        this.errorMessage=error.statusText;
+        console.log(this.errorMessage);
+      },
+    );
+
   }
 
 

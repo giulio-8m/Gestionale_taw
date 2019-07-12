@@ -1,15 +1,12 @@
 export class User {
 
    constructor(){
-      this.username="canedidio";
+      this.username=null;
+      this.role=null;
+      this.password=null;
    }
 
-   username:string=null;
-   role:string=null;
-   password:string=null;
-   admin:boolean=false;
-
-   canta(){
-      console.log("canta\n\n\n");
-   }
+   username:string;
+   role:string;
+   password:string;
 }

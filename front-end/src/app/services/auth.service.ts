@@ -17,27 +17,27 @@ export class AuthService {
   }  
 
   
-  
-  signUp(user:User){
-    return this.http.post<any>(`${this.env.serverUrl}/api/register`, user)
-    .pipe(
-      tap((res) => {
-        localStorage.setItem('user_token', res.token);
-        this.router.navigate(['']);
-      })
-    ); 
-  }
-
-  signIn(user:User){
-    return this.http.post<any>(`${this.env.serverUrl}/api/login`, user)
+  signUp(user:User){    
+    return this.http.post<any>(`http://localhost:3000/users/sign-up`, user)
     .pipe(
       tap(res => {
-        localStorage.setItem('user_token', res.token);
+      //  localStorage.setItem('user_token', res.token);
+        console.log(res);
         this.router.navigate(['']);
       })
     );
   }
 
+  signIn(user:User){    
+    return this.http.post<any>(`http://localhost:3000/users/sign-in`, user)
+    .pipe(
+      tap(res => {
+      //  localStorage.setItem('user_token', res.token);
+        console.log(res);
+        this.router.navigate(['']);
+      })
+    );
+  }
 
   isLogged() {
       return true;
