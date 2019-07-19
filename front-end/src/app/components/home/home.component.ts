@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { TablesService } from 'src/app/services/tables.service';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,25 @@ export class HomeComponent implements OnInit {
 
   cane="diocane";
   
-  constructor(private auth:AuthService) { }
+  constructor(private auth:AuthService,private tables:TablesService) { }
 
   ngOnInit() {
   }
 
+  getUsers(){
+    this.auth.getUsers().subscribe(
+      (res)=>console.log(res),
+      (err)=>console.log(err)
+    );
+  }
+
+  generateTable(){
+    this.tables.generateTable().subscribe(
+      (res)=>console.log(res),
+      (err)=>console.log(err),
+      ()=>console.log("done")
+    );
+  }
   
 
 }

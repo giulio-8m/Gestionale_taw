@@ -1,0 +1,27 @@
+.head{
+    background-color: black;
+    color:white;
+    font-size: 1.1rem;
+}
+
+.td-center{
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+/*non funzia boh
+.td-center:hover ~ .free{
+    background-color: rgba(51, 170, 51, .9) ;
+}*/
+
+.free{
+    background-color:rgba(51, 170, 51,  .47);
+}
+
+
+.busy{
+    background-color:rgba(192, 0, 0, 0.47);
+}
+
+.busy:hover{
+    background-color:red;
+}

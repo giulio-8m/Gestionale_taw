@@ -1,5 +1,5 @@
 const express = require('express');
-const usersModel = require ('../models/user.model');
+const userModel= require ('../models/user.model');
 const controllerAuth = require ('../controllers/authentication');
 const router=express.Router();
 
@@ -25,5 +25,7 @@ router.get('/error',(req,res)=>{
 router.post('/users/sign-in',controllerAuth.signIn);
 
 router.post('/users/sign-up',controllerAuth.signUp);
+
+router.get('/users/all',controllerAuth.getUsers);
 
 module.exports=router;

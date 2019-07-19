@@ -1,0 +1,42 @@
+<div class="table-responsive table-hover table-bordered">
+  <!--Table-->
+  <table class="table text-center">
+
+    <!--Table head-->
+    <thead class="head">
+      <tr>
+        <th>Status</th>
+        <th class="th-sm">Tavolo</th>
+        <th class="th-sm">N. clienti</th>
+        <th class="th-sm">Ordini</th>
+      </tr>
+    </thead>
+    <!--Table [ngClass]="{'free': free(table.clientsNumber),'busy': free(table.clientsNumber)}" head-->
+    <tbody>           
+            <tr *ngFor="let table of this.tables; let i=index">
+              <td class="td-center free" *ngIf="free(table.clientsNumber); else busy">
+                  Libero
+              </td> 
+              <ng-template #busy>
+                  <td class="td-center busy">
+                    Occu
+                    <br>
+                    pato
+                  </td>
+              </ng-template>
+              <td class="td-center">{{table.code}}</td>
+              <td class="td-center" *ngIf="free(table.clientsNumber); else options" >
+                  <select class="form-control-lg" #clientsNumber="ngModel" name="clientsNumber" [(ngModel)]="table.clientsNumber" >
+                    <option *ngFor="let seat of table.seats">{{seat}}</option>
+                  </select>
+              </td>
+              <ng-template #options>
+                  <td class="td-center">{{table.clientsNumber}}</td>
+              </ng-template>
+              <td class="td-center"><button type="button" class="btn btn-primary btn-lg" style="width:100%;" (click)="ordine($event,table)">ordine</button></td>     
+            </tr>
+    </tbody>
+
+  </table>
+  <!--Table-->
+</div>

@@ -10,6 +10,9 @@ import { AuthguardService } from './services/authguard.service';
 import { ErrorsService } from './services/errors.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthSetService } from './services/auth-set.service';
+import { TablesComponent } from './components/tables/tables.component';
+import { OrderComponent } from './components/order/order.component';
+import { OrdineComponent } from './components/ordine/ordine.component';
 
 
 
@@ -18,7 +21,8 @@ import { AuthSetService } from './services/auth-set.service';
     AppComponent,
     NavbarComponent,
     RoutingComponents,
-
+    OrderComponent,
+    OrdineComponent,
   ],
   imports: [
     BrowserModule,

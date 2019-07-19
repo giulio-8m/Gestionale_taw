@@ -1,8 +1,8 @@
 const passport = require('passport');
+const jwt=require('jsonwebtoken');
+//const userModel= require ('../models/user.model');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-
-
 
 function generateJwt(user) {
     let expiry = new Date();
@@ -14,7 +14,7 @@ function generateJwt(user) {
       exp: parseInt(expiry.getTime() / 1000, 10)
     };
     return jwt.sign(token, process.env.JWT_SECRET, {algorithm: 'RS256'});
-}
+};
 
 
 
@@ -26,11 +26,12 @@ const signIn = (req,res)=>{
         passport.authenticate('local', (err, user, info) => {
             let token;
             if (err) {
+                console.log("errore qui\n");    
                 return res.status(401).json(err);
             }
             if (user) {
                 token = generateJwt(user);
-                return res.status(200).send(token);
+                return res.status(200).json(token);
             } else {
                 return res.status(401).json(info);
             }
@@ -49,21 +50,42 @@ const signUp = (req,res)=>{
         user.username=req.body.username;
         user.role=req.body.role;
         user.setPassword(req.body.password);
-
+        console.log("i'm trying to register right now before save!!\n");
+        console.log(user.toJSON());
         user.save((err) => {
             if (err){
-                return res.status(404).json(err);
+                err.message="Username already taken";
+                return res.status(400).json(err);
             }else{
-                let token ="diolamadonna";
-                //generateJwt(user);
-                return res.status(200).send(token);
+                console.log("salvato con successo yaaay!\n");
+                let token =generateJwt(user);
+                return res.status(200).json(token);
             }
         });
     }
 
 };
 
+const getUsers = (req,res)=>{
+    passport.authenticate('jwt', (err, user, info) => {
+        if (err) {
+            console.log("errore qui\n");    
+            return res.status(401).json(err);
+        }
+        if (user) {  
+            User.find({}).then(function(uusers){
+                return res.status(200).json(uusers);
+            });
+        } else {
+            return res.status(401).json(info);
+        }
+        })(req, res);
+  
+
+};
+
 module.exports = {
     signIn,
-    signUp
+    signUp, 
+    getUsers
 };

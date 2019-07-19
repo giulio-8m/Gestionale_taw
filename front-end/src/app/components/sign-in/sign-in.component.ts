@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SignInComponent implements OnInit {
 
   public user:User;
-  public errorMessage;
+  public errorMessage:string;
 
   constructor(private auth:AuthService) { }
 
