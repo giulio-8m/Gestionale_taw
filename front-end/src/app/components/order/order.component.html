@@ -1,1 +1,81 @@
-<p>order works!</p>
+<div class="table-responsive table-hover table-bordered" *ngIf="dishList; else Drinks" >
+    <!--Table-->
+    <table class="table text-center">
+  
+      <!--Table head-->
+      <thead class="head">
+        <tr>
+          <th> # </th>
+          <th class="th-sm">Piatto</th>
+          <th class="th-sm">Quantità</th>
+        </tr>
+      </thead>
+      <!--Table [ngClass]="{'free': free(table.clientsNumber),'busy': free(table.clientsNumber)}" head-->
+      <tbody>           
+              <tr *ngFor="let dish of this.dishes; let i=index">
+                <td class="td-center">{{i}}</td>
+                <td class="td-center">{{dish.name}}</td>
+                <td class="td-center">{{dish.amount}}</td>     
+              </tr>
+              <!-- Add food row-->
+              <tr>
+                <td> </td>
+                <td class="td-center"><input class="form-control form-control-sm" placeholder="inserisci nome piatto" type="text" name="dish" #dish="ngModel" [(ngModel)]="name"></td>
+                <td class="td-center">
+                    <button type="button" class="btn btn-sm btn-danger " (click)="remove($event)">-</button>
+                    {{ amount }}
+                    <button type="button" class="btn btn-sm btn-success " (click)="add($event)">+</button>
+                </td>
+              </tr>
+      </tbody>
+    </table>
+
+
+    <div class="modal-footer justify-content-between">
+            <button type="button" class="btn  btn-secondary" (click)="swap()" >Vai alle <br> bevande</button>
+            <button type="button" class="btn btn-primary" (click)="pushDish($event)" >Aggiungi <br>piatto</button>       
+    </div>
+    <!--Table-->
+  </div>
+
+<ng-template #Drinks>
+        <div class="table-responsive table-hover table-bordered">
+                <!--Table-->
+                <table class="table text-center">
+              
+                  <!--Table head-->
+                  <thead class="head">
+                    <tr>
+                      <th> # </th>
+                      <th class="th-sm">Bevanda</th>
+                      <th class="th-sm">Quantità</th>
+                    </tr>
+                  </thead>
+                  <!--Table [ngClass]="{'free': free(table.clientsNumber),'busy': free(table.clientsNumber)}" head-->
+                  <tbody>           
+                          <tr *ngFor="let drink of this.drinks; let i=index">
+                            <td class="td-center">{{i}}</td>
+                            <td class="td-center">{{drink.name}}</td>
+                            <td class="td-center">{{drink.amount}}</td>     
+                          </tr>
+                          <!-- Add food row-->
+                          <tr>
+                            <td> </td>
+                            <td class="td-center"><input class="form-control form-control-sm" placeholder="inserisci nome bevanda" type="text" name="drinkk" #drinkk="ngModel" [(ngModel)]="name"></td>
+                            <td class="td-center">
+                                <button type="button" class="btn btn-sm btn-danger " (click)="remove($event)">-</button>
+                                {{ amount }}
+                                <button type="button" class="btn btn-sm btn-success " (click)="add($event)">+</button>
+                            </td>
+                          </tr>
+                  </tbody>
+                </table>
+            
+            
+                <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn  btn-secondary" (click)="swap()">Vai ai<br> piatti</button>
+                        <button type="button" class="btn btn-primary" (click)="pushDrink($event)" >Aggiungi <br>Bevanda</button>       
+                </div>
+                <!--Table-->
+              </div>
+</ng-template>

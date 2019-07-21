@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Table } from 'src/app/models/table';
-import { OrdersService } from 'src/app/services/orders.service';
 import { TablesService } from 'src/app/services/tables.service';
 
 @Component({

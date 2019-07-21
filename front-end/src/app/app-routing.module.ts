@@ -5,12 +5,14 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AuthguardService } from './services/authguard.service';
 import { HomeComponent } from './components/home/home.component';
 import { TablesComponent } from './components/tables/tables.component';
+import { OrderComponent } from './components/order/order.component';
 
 
 const routes: Routes = [
 
   {path: '', component: HomeComponent,canActivate:[AuthguardService]},
   {path: 'tables',component:TablesComponent},
+  {path: 'order',component:OrderComponent},
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},
   {path: '**', component: HomeComponent,canActivate:[AuthguardService]},
@@ -25,5 +27,6 @@ export const RoutingComponents=[
   SignInComponent,
   SignUpComponent,
   HomeComponent,
-  TablesComponent
+  TablesComponent,
+  OrderComponent
 ];
