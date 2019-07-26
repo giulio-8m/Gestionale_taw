@@ -6,6 +6,8 @@ const router=express.Router();
 
 router.get('/tables',controllerTables.getTables);
 
+router.get('/tables/:id',controllerTables.getTable);
+
 router.post('/tables/generate',controllerTables.generateTable);
 
 module.exports=router;

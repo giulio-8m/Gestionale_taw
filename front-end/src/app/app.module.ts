@@ -10,6 +10,9 @@ import { AuthguardService } from './services/authguard.service';
 import { ErrorsService } from './services/errors.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthSetService } from './services/auth-set.service';
+import { KitchenComponent } from './components/kitchen/kitchen.component';
+import { BarComponent } from './components/bar/bar.component';
+
 
 
 
@@ -18,6 +21,8 @@ import { AuthSetService } from './services/auth-set.service';
     AppComponent,
     NavbarComponent,
     RoutingComponents,
+    KitchenComponent,
+    BarComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,28 @@ router.get('/users',(req,res)=>{
     res.send('You have requested a person');
 });
 
+
+localhost:3000/orders?searchBy=ordine
+
+router.get('/orders',
+
+
+(req,res)=>{
+    if(req.query.searchBy){
+        if(req.query.searchBy=="ordine"){
+            dati=mongoose.Schema.find();
+            res.send(200).json(dati);
+        }else{
+
+        }
+    }
+}
+
+
+);
+
+
+
 router.get('/users/:name',(req,res)=>{
     res.send("you have requested"+req.params.name);
 });

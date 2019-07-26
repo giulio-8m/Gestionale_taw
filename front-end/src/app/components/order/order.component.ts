@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TablesService } from 'src/app/services/tables.service';
 import { Dish} from 'src/app/models/Dish';
 import { Drink } from 'src/app/models/Drink';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-order',
@@ -12,18 +13,20 @@ export class OrderComponent implements OnInit {
 
   dishList:boolean;
 
-  dishes:Array<Dish>;
+  firstDishes:Array<Dish>;
+  secondDishes:Array<Dish>;
   drinks:Array<Drink>;
   name:string;
   amount:number;
 
-  constructor(tables:TablesService) { }
+  constructor(orders:OrdersService) { }
 
   ngOnInit() {
     this.dishList=true;
     this.name=null;
     this.amount=0;
-    this.dishes=new Array();
+    this.firstDishes=new Array();
+    this.secondDishes=new Array();
     this.drinks=new Array();
   }
 
@@ -36,33 +39,13 @@ export class OrderComponent implements OnInit {
     this.amount-=1;
   }
 
-  pushDish(event){
-    if(this.name!=null && this.amount >=1){
-      this.dishes.push(new Dish(this.name,this.amount));
-      this.name=null;
-      this.amount=0;
-    }
+  pushDishes(event){
+    
 
   }
 
-  pushDrink(event){
-    if(this.name!=null && this.amount >=1){
-      this.drinks.push(new Drink(this.name,this.amount));
-      this.name=null;
-      this.amount=0;
-    }
-  }
-
-  swap(){
-    if(this.dishList){
-      this.amount=0;
-      this.name=null;
-      this.dishList=false; 
-    }else{
-      this.amount=0;
-      this.name=null;
-      this.dishList=true;
-    }
+  pushDrinks(event){
+    
   }
 
 

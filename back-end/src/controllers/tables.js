@@ -26,7 +26,14 @@ const generateTable = (req,res)=>{
     });
 };
 
+const getTable=(req,res)=>{
+
+    res.status(200).json(res.params.id);
+
+}
+
 module.exports = {
    getTables,
+   getTable,
    generateTable
 };
