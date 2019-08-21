@@ -8,9 +8,7 @@ let tableSchemaProva2= new Schema({
         required: true,
         unique:true
     },
-    waiter:String,
     clientsNumber:Number,
-    orders:Object,
     seats:Array,
     prova:String
 });

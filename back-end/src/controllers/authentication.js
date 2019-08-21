@@ -48,8 +48,11 @@ const signUp = (req,res)=>{
 
         let user=new User();
         user.username=req.body.username;
-        user.role=req.body.role;
+       
         user.setPassword(req.body.password);
+        user.role=req.body.role;
+        user.status=req.body.status;
+        user.completedjobs=req.body.completedjobs;
         console.log("i'm trying to register right now before save!!\n");
         console.log(user.toJSON());
         user.save((err) => {

@@ -30,9 +30,7 @@ router.get('/orders',
     }
 }
 
-
 );
-
 
 
 router.get('/users/:name',(req,res)=>{
@@ -49,5 +47,6 @@ router.post('/users/sign-in',controllerAuth.signIn);
 router.post('/users/sign-up',controllerAuth.signUp);
 
 router.get('/users/all',controllerAuth.getUsers);
+
 
 module.exports=router;

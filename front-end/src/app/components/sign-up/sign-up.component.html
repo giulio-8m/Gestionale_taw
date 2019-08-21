@@ -30,6 +30,7 @@
                     <select class="form-control" #role="ngModel" name="role" [(ngModel)]="user.role" [class.is-invalid]="role.invalid && role.touched"required>
                         <option>Cameriere</option>
                         <option>Cuoco</option>
+                        <option>Barista</option>
                         <option>Cassa</option>
                     </select>
                     <span class="text-danger" [class.d-none]="role.valid || role.untouched">Devi selezionare un ruolo</span>

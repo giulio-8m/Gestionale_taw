@@ -4,32 +4,64 @@ process.env.PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOC
 const db = require('./models/db.model');
 const express = require('express');
 const passport= require('passport');
-
 var cors = require('cors');
 const bodyParser = require('body-parser');
 
 const usersRoute = require('./routes/users.route');
 const tablesRoute= require('./routes/tables.route');
 const ordersRoute= require('./routes/orders.route');
-
-
+const menuRoute= require('./routes/menu.route');
 
 const app=express();
 const port=process.env.PORT || 3000;
 
+const server = require('http').Server(app);
+const socketioJwt=require('socketio-jwt');
+global.io = require('socket.io')(server);
+global.socketUsers=[];
+
 const config = require('./config/passport.config');
 
-app.use(cors());
+server.listen(port,()=>console.log(`lisening on port ${port} allah uh akbar`));
+
+app.use(cors({
+    origin: function(origin, callback){
+      return callback(null, true);
+    },
+    optionsSuccessStatus: 200,
+    credentials: true
+  }));
 
 // log in console the port where the app is litsening
-app.listen(port,()=>console.log(`lisening on port ${port} allah uh akbar`));
+//app.listen(port,()=>console.log(`lisening on port ${port} allah uh akbar`));
+/*socket part */
+  io.on('connection', socketioJwt.authorize({
+    secret: process.env.PUBLIC_KEY,
+    timeout: 0 // 15 seconds to send the authentication message
+  })).on('authenticated', function(socket) {
+    //this socket is authenticated, we are good to handle more events from it.
+    console.log('hello! ' + socket.decoded_token.username);
 
+    socket.on('booked_table',function(){
+      console.log("table booked"); 
+      socket.broadcast.emit('update_tables');
+    });
 
-//log in console the url of the incoming request
-app.use((req,res,next)=>{
-    console.log(`${new Date().toString()}=> ${req.originalUrl}\n\n`);
-    next();
-});
+    socket.on('kitchenOrder',function(){
+      console.log('kitchen order message');
+      socket.broadcast.emit('update_kitchenOrders');
+    });
+
+    socket.on('barOrder',function(){
+      console.log('bar order message');
+      socket.broadcast.emit('update_barOrders');
+    });
+  
+    socket.on('disconnect', function() {
+      console.log("Bye bye " + socket.decoded_token.username)
+      //delete global.userSocket[user];
+    });
+  });
 
 // inizializiamo passoport
 app.use(passport.initialize());
@@ -40,6 +72,8 @@ app.use(bodyParser.json());
 //adding routes
 app.use(tablesRoute);
 app.use(usersRoute);
+app.use(menuRoute);
+app.use(ordersRoute);
 
 
 //handling unexisting api request
@@ -52,3 +86,6 @@ app.use((err,req,res,next)=>{
     console.error(err.stack);
     res.status(500);
 });
+
+
+

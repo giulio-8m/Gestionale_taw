@@ -10,13 +10,11 @@ const getTables= (req,res)=>{
 
 const generateTable = (req,res)=>{
     let table=new Table();
-    table.code="10SA2";
-    table.waiter=null;
+    table.code="11SB1";
     table.clientsNumber=0;
-    table.orders={};
-    table.seats=[1,2,3,4,5,6,7,8,9,10,11];
+    table.seats=[1,2,3,4,5,6];
     table.prova="prova2";
-    console.log(table);
+    //console.log(table);
     table.save((err)=>{
         if(err){
             return res.status(500).json(err);
@@ -32,8 +30,20 @@ const getTable=(req,res)=>{
 
 }
 
+const bookTable=(req,res)=>{
+    Table.findOne({code:req.params.id},(err,table)=>{
+        if(err){
+            return err;
+        }else{
+            table.clientsNumber=req.body.clients;
+            table.save();
+        } 
+    });
+}
+
 module.exports = {
    getTables,
    getTable,
+   bookTable,
    generateTable
 };

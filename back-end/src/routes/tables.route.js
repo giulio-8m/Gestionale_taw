@@ -10,4 +10,6 @@ router.get('/tables/:id',controllerTables.getTable);
 
 router.post('/tables/generate',controllerTables.generateTable);
 
+router.put('/tables/:id',controllerTables.bookTable);
+
 module.exports=router;

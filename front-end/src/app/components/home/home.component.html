@@ -5,3 +5,32 @@
 <input type="button" (click)="getUsers()" value="cliccami">
 
 <input type="button" (click)="generateTable()" value="generaTavolo">
+
+
+
+<p>Generate Menu Item</p>
+
+<label>Name</label>
+<input type="text" #name1="ngModel" [(ngModel)]="name" class="form-control">
+<p>{{name}}</p>
+
+<label>type</label>
+<input type="text" #name2="ngModel" [(ngModel)]="type" class="form-control">
+<p>{{type}}</p>
+
+<label>price</label>
+<input type="text" #name3="ngModel" [(ngModel)]="price" class="form-control">
+<p>{{price}}</p>
+
+<label>preparationTime</label>
+<input type="text" #name4="ngModel" [(ngModel)]="preparationTime" class="form-control">
+<p>{{preparationTime}}</p>
+
+<input type="button" (click)="generateItem()" value="putDishIntoMenu">
+
+
+
+
+<input type="button" (click)="deleteKitchenOrders()" value="delete kitchen orders">
+
+<input type="button" (click)="deleteBarOrders()" value="delete bar orders">

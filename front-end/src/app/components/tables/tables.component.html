@@ -15,25 +15,24 @@
     <tbody>           
             <tr *ngFor="let table of this.tables; let i=index">
               <td class="td-center free" *ngIf="free(table.clientsNumber); else busy">
-                  Libero
+                  <i class="far fa-check-circle fa-2x"></i>
               </td> 
               <ng-template #busy>
                   <td class="td-center busy">
-                    Occu
-                    <br>
-                    pato
+                      <i class="fas fa-ban fa-2x"></i>
                   </td>
               </ng-template>
               <td class="td-center">{{table.code}}</td>
               <td class="td-center" *ngIf="free(table.clientsNumber); else options" >
-                  <select class=" form-control-sm" #clientsNumber="ngModel" name="clientsNumber" [(ngModel)]="table.clientsNumber" >
-                    <option *ngFor="let seat of table.seats">{{seat}}</option>
+                  <select (change)="book(table)" class=" form-control-sm" #clientsNumber="ngModel" name="clientsNumber" [(ngModel)]="table.clientsNumber" >
+                    <option  *ngFor="let seat of table.seats">{{seat}}</option>
                   </select>
               </td>
               <ng-template #options>
                   <td class="td-center">{{table.clientsNumber}}</td>
               </ng-template>
-              <td class="td-center"><button type="button" class="btn btn-primary btn-lg" style="width:100%;" (click)="ordine($event,table)">ordine</button></td>     
+              <td class="td-center"><button  type="button" class="btn btn-primary btn-lg" 
+                [disabled]="!table.clientsNumber" style="width:100%;" (click)="ordine($event,table)"><i class="fas fa-arrow-right fa-1x"><span class="sp"> Ordina</span></i></button></td>     
             </tr>
     </tbody>
 

@@ -1,17 +1,25 @@
 const express = require('express');
-const ordersModel = require('../models/order.model');
+const barOrdersModel = require('../models/barOrder.model');
+const kitchenOrdersModel = require('../models/kitchenOrder.model');
 const controllerOrders = require ('../controllers/orders');
 const router=express.Router();
 
 
-router.get('/orders',controllerOrders.getOrders);
+router.post('/orders/kitchen',controllerOrders.newKitchenOrder);
+router.get('/orders/kitchen',controllerOrders.getKitchenOrders);
 
-router.get('/orders/:id',controllerOrders.getOrder);
+router.post('/orders/bar',controllerOrders.newBarOrder);
+router.get('/orders/bar',controllerOrders.getBarOrders);
 
-router.get('/orders/drinks',controllerOrders.getDrinks);
+router.put('/orders/bar/:id',controllerOrders.updateBarOrder);
+router.put('/orders/kitchen/:id',controllerOrders.updateKitchenOrder);
 
-router.get('/orders/dishes',controllerOrders.getDishes);
+router.delete('/orders/bar',controllerOrders.deleteBarOrders);
 
-router.post('/orders/newOrder',controllerOrders.newOrder);
+router.delete('/orders/kitchen',controllerOrders.deleteKitchenOrders);
+
+router.get('/orders/bar/ready/:waiter',controllerOrders.getReadyBarOrders);
+
+router.get('/orders/kitchen/ready/:waiter',controllerOrders.getReadyKitchenOrders);
 
 module.exports=router;

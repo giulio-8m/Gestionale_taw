@@ -20,7 +20,9 @@ let userSchema= new Schema({
     salt:{
         type:String,
         required: true,
-    }
+    },
+    status:String,
+    completedjobs:Number
 });
 
 userSchema.methods.setPassword = function(password) {

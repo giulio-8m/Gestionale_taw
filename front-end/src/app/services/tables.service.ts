@@ -17,5 +17,9 @@ export class TablesService {
     return this.http.post<any>(`http://localhost:3000/tables/generate`,null);
   }
 
+  bookTable(tableCode:string,clientsNumber:number){
+    return this.http.post<any>(`http://localhost:3000/tables/${tableCode}`,{clients:clientsNumber});
+  }
+
 
 }

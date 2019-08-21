@@ -6,7 +6,7 @@ const user ="";
 const password ="";
 
 //mongoose.connect(`mongodb://${user}:${password}@${server}/${database}`);
-
+mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
 const db=mongoose.connect(`mongodb://${server}/${database}`,{useNewUrlParser:true}).then(function onconnected() {
