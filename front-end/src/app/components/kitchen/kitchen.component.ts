@@ -19,7 +19,6 @@ export class KitchenComponent implements OnInit {
   ngOnInit() {
 
     this.kitchenOrders();
-
     this.socketService.socket.on('update_kitchenOrders',()=>{
       this.kitchenOrders();
     })
@@ -31,7 +30,7 @@ export class KitchenComponent implements OnInit {
       (res)=>this.orders=res,
       (err)=>console.log(err),
       ()=>{
-        
+        console.log(this.orders);
       }
     );
   }
@@ -57,9 +56,7 @@ export class KitchenComponent implements OnInit {
 
   update(order:Order){
     let progressBar:string='#'+order._id;
-      console.log(progressBar);
       $(progressBar).find(".progress").each(function() {
-        console.log("heere");
 
         let value=order.status;
         var left = $(this).find('.progress-left .progress-bar');
@@ -100,17 +97,19 @@ export class KitchenComponent implements OnInit {
   finish(dish:MenuItem,order:Order){
 
     dish.status="finish";
-
     let prop:number=100/order.items.length;
     order.status+=prop;
     this.update(order);
-
     this.ordersService.updateKitchenOrder(order).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
       ()=>console.log("done")
     );
     this.socketService.socket.emit('kitchenOrder');
+
+    if(order.status>99.9){
+      this.socketService.socket.emit('kitchenOrderReady');
+    }
 
   }
 

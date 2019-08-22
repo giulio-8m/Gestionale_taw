@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Table } from 'src/app/models/table';
+import { SocketService } from 'src/app/services/socket.service';
 import { TablesService } from 'src/app/services/tables.service';
 import { Router } from '@angular/router';
-import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
-  selector: 'app-tables',
-  templateUrl: './tables.component.html',
-  styleUrls: ['./tables.component.css']
+  selector: 'app-tables-desk',
+  templateUrl: './tables-desk.component.html',
+  styleUrls: ['./tables-desk.component.css']
 })
-export class TablesComponent implements OnInit {
+export class TablesDeskComponent implements OnInit {
+
 
   nClients:Number;
   tables:Array<Table>;
@@ -53,8 +54,7 @@ export class TablesComponent implements OnInit {
   }
 
   ordine(event,table:Table){
-    this.router.navigate(['/orders',table.code]);
+    this.router.navigate(['/check-out',table.code]);
   }
-
 
 }

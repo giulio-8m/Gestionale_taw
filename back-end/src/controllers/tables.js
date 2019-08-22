@@ -37,6 +37,7 @@ const bookTable=(req,res)=>{
         }else{
             table.clientsNumber=req.body.clients;
             table.save();
+
         } 
     });
 }

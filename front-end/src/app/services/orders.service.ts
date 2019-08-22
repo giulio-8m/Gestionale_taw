@@ -18,12 +18,18 @@ export class OrdersService {
     return this.http.post<any>('http://localhost:3000/orders/kitchen',order);
   }
 
-  getBarOrders(){
-    return this.http.get<any>('http://localhost:3000/orders/bar');
+  getBarOrders(query?:string){
+    if(query)
+      return this.http.get<any>(`http://localhost:3000/orders/bar${query}`);
+    else 
+      return this.http.get<any>(`http://localhost:3000/orders/bar`);
   }
 
-  getKitchenOrders(){
-    return this.http.get<any>('http://localhost:3000/orders/kitchen');
+  getKitchenOrders(query?:string){
+    if(query)
+      return this.http.get<any>(`http://localhost:3000/orders/kitchen${query}`);
+    else  
+      return this.http.get<any>(`http://localhost:3000/orders/kitchen`);
   } 
 
   updateKitchenOrder(order:Order){
@@ -43,13 +49,15 @@ export class OrdersService {
     return this.http.delete<any>('http://localhost:3000/orders/kitchen',{});
   }
 
-  getReadyKitchenOrders(waiter:string){
-    return this.http.get<any>(`http://localhost:3000/orders/kitchen/ready/${waiter}`);
+  getKitchenOrdersByWaiter(waiter:string){
+    return this.http.get<any>(`http://localhost:3000/orders/kitchen/${waiter}`);
   }
 
-  getReadyBarOrders(waiter:string){
-    return this.http.get<any>(`http://localhost:3000/orders/bar/ready/${waiter}`);
+  getBarOrdersByWaiter(waiter:string){
+    return this.http.get<any>(`http://localhost:3000/orders/bar/${waiter}`);
   }
+
+
 
 
 }

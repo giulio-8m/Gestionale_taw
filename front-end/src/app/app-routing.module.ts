@@ -9,6 +9,11 @@ import { OrderComponent } from './components/order/order.component';
 import { KitchenComponent } from './components/kitchen/kitchen.component';
 import { BarComponent } from './components/bar/bar.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { DeskComponent } from './components/desk/desk.component';
+import { TablesDeskComponent } from './components/tables-desk/tables-desk.component';
+import { OrdersDeskComponent } from './components/orders-desk/orders-desk.component';
+import { UsersComponent } from './components/users/users.component';
+import { CheckOutComponent } from './components/check-out/check-out.component';
 
 
 const routes: Routes = [
@@ -18,6 +23,11 @@ const routes: Routes = [
   {path: 'kitchen',component:KitchenComponent,canActivate:[AuthguardService]},
   {path: 'tables',component:TablesComponent,canActivate:[AuthguardService]},
   {path: 'orders/:id',component:OrderComponent,canActivate:[AuthguardService]},
+  {path: 'desk',component:DeskComponent,canActivate:[AuthguardService]},
+  {path: 'tables-desk',component:TablesDeskComponent,canActivate:[AuthguardService]},
+  {path: 'orders-desk',component:OrdersDeskComponent,canActivate:[AuthguardService]},
+  {path: 'users',component:UsersComponent,canActivate:[AuthguardService]},
+  {path: 'check-out/:id',component:CheckOutComponent,canActivate:[AuthguardService]},
   {path: 'sign-in', component: SignInComponent},
   {path: 'sign-up', component: SignUpComponent},
   {path: 'unauthorized',component:UnauthorizedComponent},
@@ -37,5 +47,9 @@ export const RoutingComponents=[
   OrderComponent,
   KitchenComponent,
   BarComponent,
-  UnauthorizedComponent
+  UnauthorizedComponent,
+  DeskComponent,
+  TablesDeskComponent,
+  OrdersDeskComponent,
+  UsersComponent
 ];

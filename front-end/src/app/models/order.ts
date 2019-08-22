@@ -8,7 +8,8 @@ export class Order{
         this.waiter_id=waiter_id;
         this.worker_id=null;
         this.status=0;
-        this.orderNumber=null;
+        this.kitchenOrderNumber=null;
+        this.barOrderNumber=null;
         this.items=new Array();
     }
 
@@ -17,7 +18,8 @@ export class Order{
     waiter_id:string;
     worker_id:string;
     status:number;
-    orderNumber:number;
+    kitchenOrderNumber:number;
+    barOrderNumber:number;
     items:Array<MenuItem>;
 
 }

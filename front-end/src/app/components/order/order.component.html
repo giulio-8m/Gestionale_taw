@@ -45,10 +45,10 @@
         <!-- Modal body -->
         <div class=" modal-body modal-body-size">
             <div class="row align-items-center border-bottom" *ngFor="let dish of firstDishes">
-                <div class="col-7  font-weight-bold red">
+                <div class="col-6  font-weight-bold red">
                   <h4 class="m-0">{{dish.name}}</h4>
                 </div>
-                <div class="col-5 green p-1">
+                <div class="col-6 green p-2">
 
                     <input type="text" class=" col-4 number " #amout="ngModel" [(ngModel)]="dish.amount" >
                     <button class="btn btn-success btn-circle m-1 align-self-center" (click)="add(dish)" ><i class="fa fa-plus align-self-auto"></i></button>      
@@ -79,10 +79,10 @@
         <!-- Modal body -->
         <div class=" modal-body modal-body-size">
             <div class="row align-items-center border-bottom" *ngFor="let dish of secondDishes">
-                <div class="col-7  font-weight-bold red">
+                <div class="col-6  font-weight-bold red">
                   <h4 class="m-0">{{dish.name}}</h4>
                 </div>
-                <div class="col-5 green p-1">
+                <div class="col-6 green p-2">
 
                     <input type="text" class=" col-4 number " #amout="ngModel" [(ngModel)]="dish.amount" >
                     <button class="btn btn-success btn-circle m-1 align-self-center" (click)="add(dish)" ><i class="fa fa-plus align-self-auto"></i></button>      
@@ -113,10 +113,10 @@
         <!-- Modal body -->
         <div class=" modal-body modal-body-size">
             <div class="row align-items-center border-bottom" *ngFor="let drink of drinks">
-                <div class="col-7  font-weight-bold red">
+                <div class="col-6  font-weight-bold red">
                   <h4 class="m-0">{{drink.name}}</h4>
                 </div>
-                <div class="col-5 green p-1">
+                <div class="col-6 green p-2">
 
                     <input type="text" class=" col-4 number " #amout="ngModel" [(ngModel)]="drink.amount" >
                     <button class="btn btn-success btn-circle m-1 align-self-center" (click)="add(drink)" ><i class="fa fa-plus align-self-auto"></i></button>      

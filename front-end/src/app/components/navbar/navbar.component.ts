@@ -13,53 +13,15 @@ import * as $ from 'jquery';
 })
 export class NavbarComponent implements OnInit {
 
-  readyBarOrders:Array<Order>;
-  readyKitchenOrders:Array<Order>;
 
-  constructor(private auth:AuthService,private socketService:SocketService,private ordersService:OrdersService) { }
+  constructor(private auth:AuthService,private socketService:SocketService) { }
 
   ngOnInit() {
-    this.readyBarOrders=null;
-    this.readyKitchenOrders=null;
-
-    
     if(this.auth.user==null){
       if( localStorage.getItem('user_token')){
         this.auth.parseToken();
       }
     }
-    if(this.auth.user && this.auth.user.role=="Cameriere"){
-
-      this.ordersService.getKitchenOrders().subscribe(
-        (res)=>{this.readyKitchenOrders=res; console.log(this.readyKitchenOrders)},
-        (err)=>console.log(err),
-        ()=>console.log("done")
-      );
-
-      this.ordersService.getBarOrders().subscribe(
-        (res)=>{this.readyBarOrders=res;console.log(this.readyBarOrders)},
-        (err)=>console.log(err),
-        ()=>console.log("done")
-      );
-
-
-      this.socketService.socket.on('update_readyKitchenOrders',()=>{
-        this.ordersService.getKitchenOrders().subscribe(
-          (res)=>this.readyKitchenOrders=res,
-          (err)=>console.log(err),
-          ()=>console.log("done")
-        );
-      }); 
-      this.socketService.socket.on('update_readyBarOrders',()=>{
-        this.ordersService.getBarOrders().subscribe(
-          (res)=>this.readyBarOrders=res,
-          (err)=>console.log(err),
-          ()=>console.log("done")
-        );
-      })
-    }
-
-
   }
 
   exit(){

@@ -18,7 +18,6 @@ export class BarComponent implements OnInit {
   ngOnInit() {
 
     this.barOrders();
-
     this.socketService.socket.on('update_barOrders',()=>{
       console.log("arrivato messaggio bar socket");
       this.barOrders();
@@ -57,21 +56,19 @@ export class BarComponent implements OnInit {
 
   update(order:Order){
     let progressBar:string='#'+order._id;
-      console.log(progressBar);
-      $(progressBar).find(".progress").each(function() {
-        console.log("heere");
 
-        let value=order.status;
-        var left = $(this).find('.progress-left .progress-bar');
-        var right = $(this).find('.progress-right .progress-bar');
-    
-          if (value <= 50) {
-            right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
-          } else {
-            right.css('transform', 'rotate(180deg)')
-            left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
-          }
-        });
+    $(progressBar).find(".progress").each(function() {
+      let value=order.status;
+      var left = $(this).find('.progress-left .progress-bar');
+      var right = $(this).find('.progress-right .progress-bar');
+  
+        if (value <= 50) {
+          right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
+        } else {
+          right.css('transform', 'rotate(180deg)')
+          left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
+        }
+      });
   }
 
 
@@ -98,19 +95,19 @@ export class BarComponent implements OnInit {
   }
 
   finish(dish:MenuItem,order:Order){
-
     dish.status="finish";
-
     let prop:number=100/order.items.length;
     order.status+=prop;
     this.update(order);
-
     this.ordersService.updateBarOrder(order).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
       ()=>console.log("done")
     );
     this.socketService.socket.emit('barOrder');
+    if(order.status>99.9){
+      this.socketService.socket.emit('barOrderReady');
+    }
 
   }
 

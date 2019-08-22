@@ -52,7 +52,7 @@
       <div  class="row align-items-center border-bottom " *ngFor="let item of order.items">
         <div class="col-7 ">
           <div class="row align-items-center ">
-            <div class="col-4">
+            <div class="col-4 p-0 ">
               <h5 class="font-weight-bold">Nome:</h5>
             </div>
             <div class="col-8">
@@ -60,7 +60,7 @@
             </div>
           </div>
           <div class="row align-items-center">
-              <div class="col-4">
+              <div class="col-4 p-0 ">
                 <h5 class="font-weight-bold">Quantità:</h5>
               </div>
               <div class="col-8">
@@ -68,7 +68,7 @@
               </div>
           </div>
           <div class="row align-items-center ">
-              <div class="col-4">
+              <div class="col-4 p-0 ">
                 <h5 class="font-weight-bold" >Tempo:</h5>
               </div>
               <div class="col-8">
@@ -76,12 +76,12 @@
               </div>
           </div>  
         </div>
-        <div class="col-5 p-1">
+        <div class="col-5 p-0">
             <ng-container *ngIf="statusCheck(item)!='3'; then starts; else ended"></ng-container>
             <ng-template #starts>
-              <button *ngIf="statusCheck(item)=='1'" class="btn btn-success pl-3 pr-3 pt-1 pb-1" (click)="start(item,order)"><i class="far fa-caret-square-right fa-3x"><h5 class="mb-0">Start</h5></i></button>
-              <button *ngIf="statusCheck(item)=='2'" class="btn btn-warning pl-1 pr-1 pt-1 pb-1"><i class="fas fa-spinner fa-pulse fa-3x"></i><h5 class="mb-0">cooking</h5></button>
-              <button class="btn btn-danger ml-1 pl-2.5 pr-2.5 pt-1 pb-1"(click)="finish(item,order)"><i class="fas fa-check-circle fa-3x"><h5 class="mb-0">Finish</h5></i></button>
+              <button *ngIf="statusCheck(item)=='1'" class="btn btn-success pl-2 pr-2 pt-1 pb-0" (click)="start(item,order)"><i class="far fa-caret-square-right fa-3x"><h5 class="mb-0">Start</h5></i></button>
+              <button *ngIf="statusCheck(item)=='2'" class="btn btn-warning pl-1 pr-1 pt-1 pb-0"><i class="fas fa-spinner fa-pulse fa-3x"></i><h5 class="mb-0">cookin</h5></button>
+              <button class="btn btn-danger ml-1 pl-2 pr-2 pt-1 pb-0"(click)="finish(item,order)"><i class="fas fa-check-circle fa-3x"><h5 class="mb-0">Finish</h5></i></button>
             </ng-template>
             <ng-template #ended>
               <h1 class="completed font-weight-bold">Pronto</h1>

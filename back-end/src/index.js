@@ -56,6 +56,14 @@ app.use(cors({
       console.log('bar order message');
       socket.broadcast.emit('update_barOrders');
     });
+
+    socket.on('kitchenOrderReady',function(){
+      socket.broadcast.emit('update_kitchenMessages');
+    });
+
+    socket.on('barOrderReady',function(){
+      socket.broadcast.emit('update_barMessages');
+    })
   
     socket.on('disconnect', function() {
       console.log("Bye bye " + socket.decoded_token.username)

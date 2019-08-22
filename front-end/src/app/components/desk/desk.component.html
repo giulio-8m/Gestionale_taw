@@ -1,0 +1,26 @@
+
+<br>
+<h1 class="title">Data: {{time | date:'dd-MM-yyyy '}}</h1>
+<h1 class="title">Ora: {{time | date:'hh:mm:ss a'}}</h1>
+<hr>
+
+<div class="container">
+
+  <!-- Button to Open the Modal -->
+  <button routerLink="/tables-desk" type="button" class="btn btn-primary btn-block" >
+    <br>
+    <i class="fas fa-table fa-4x"><h3>Tavoli</h3></i>
+  </button>
+  <br>
+  <button routerLink="/orders-desk" type="button" class="btn btn-outline-primary  btn-block" >
+    <br>
+    <i class="fas fa-clipboard-list fa-4x"><h3>Ordini</h3></i>
+  </button>
+  <br>
+  <button routerLink="/users" type="button" class="btn btn-primary btn-block" >
+    <br>
+    <i class="fas fa-users fa-4x"><h3>Utenti</h3></i>
+  </button>
+  <br>
+
+</div>

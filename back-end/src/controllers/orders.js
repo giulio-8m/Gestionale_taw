@@ -62,18 +62,41 @@ const newKitchenOrder=(req,res)=>{
 
 const getKitchenOrders=(req,res)=>{
     console.log("hello kitchen");
-    KitchenOrder.find({}).then(function(orders){
-      // console.log(orders);
-        res.status(200).json(orders);
-   });
+
+    if(req.query.waiter){
+        KitchenOrder.find({waiter_id:req.query.waiter}).then(function(orders){
+            res.status(200).json(orders);
+        });
+    }else if(req.query.table){
+        KitchenOrder.find({table:req.query.table}).then(function(orders){
+            res.status(200).json(orders);
+        });
+    }else{
+        KitchenOrder.find({}).then(function(orders){
+            res.status(200).json(orders);
+        });
+    }
 };
 
 const getBarOrders=(req,res)=>{
     console.log("hello bar");
-    BarOrder.find({}).then(function(orders){
-      //  console.log(orders);
-        res.status(200).json(orders);
-    });
+    if(req.query.waiter){
+        BarOrder.find({waiter_id:req.query.waiter}).then(function(orders){
+            //  console.log(orders);
+              res.status(200).json(orders);
+        });
+    }else if(req.query.table){
+        BarOrder.find({table:req.query.table}).then(function(orders){
+            //  console.log(orders);
+              res.status(200).json(orders);
+        });
+    }else{
+        BarOrder.find({}).then(function(orders){
+            //  console.log(orders);
+              res.status(200).json(orders);
+        });
+    }
+   
 };
 
 
@@ -85,51 +108,69 @@ const updateBarOrder=(req,res)=>{
         }else{
             order.status=req.body.status;
             order.items=req.body.items;
-
-            
-
-            order.save();
+            order.save((err) => {
+                if (err){
+                    return res.status(400).json(err);
+                }else{
+                    return res.status(200).json("updated order");
+                }
+            });
         }
-    })
+    });
 }
 
 const updateKitchenOrder=(req,res)=>{
     console.log('updating kitchen Order');
     KitchenOrder.findById(req.params.id,(err,order)=>{
-        order.status=req.body.status;
-        order.items=req.body.items;
-
-        console.log(req.body.items);
-        console.log(order.items);
-        order.save();
+        if(err){
+            console.log(err);
+        }else{
+            order.status=req.body.status;
+            order.items=req.body.items;
+            order.save((err) => {
+                if (err){
+                    return res.status(400).json(err);
+                }else{
+                    return res.status(200).json("updated order");
+                }
+            });
+        }
     });
 }
 
 const deleteBarOrders=(req,res)=>{
     console.log('deleting bar orders');
     BarOrder.deleteMany({},(err)=>{
-       console.log(err);
+       if(err){
+        console.log("err");
+       }else{
+           res.status(200).json("eliminati correttamente ");
+       }
     });
 }
 
 const deleteKitchenOrders=(req,res)=>{
     console.log('deleting bar orders');
     KitchenOrder.deleteMany({},(err)=>{
-       console.log(err);
-
+        if(err){
+            console.log("err");
+        }else{
+            res.status(200).json("eliminati correttamente ");
+        }
     });
 }
 
-const getReadyBarOrders=(req,res)=>{
+const getBarOrdersByWaiter=(req,res)=>{
     console.log('getting ready bar orders');
-    BarOrder.find({waiter_id:req.waiter_id}).then(function(orders){
+    BarOrder.find({waiter_id:req.params.waiter}).then(function(orders){
         res.status(200).json(orders);
     })
 }
 
-const getReadyKitchenOrders=(req,res)=>{
-    console.log('getting ready bar orders');
-    KitchenOrder.find({waiter_id:req.waiter_id}).then(function(orders){
+const getKitchenOrdersByWaiter=(req,res)=>{
+    console.log('getting ready bar orders of ' + req.params.waiter);
+
+    KitchenOrder.find({waiter_id:req.params.waiter}).then(function(orders){
         res.status(200).json(orders);
     })
 }
@@ -144,7 +185,7 @@ module.exports = {
     updateKitchenOrder,
     deleteKitchenOrders,
     deleteBarOrders,
-    getReadyKitchenOrders,
-    getReadyBarOrders
+    getKitchenOrdersByWaiter,
+    getBarOrdersByWaiter
     
  };
