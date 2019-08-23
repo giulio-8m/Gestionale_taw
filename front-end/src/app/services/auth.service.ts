@@ -43,14 +43,22 @@ export class AuthService {
       })
     );
   }
+  getUsers(){
+    return this.http.get<any>('http://localhost:3000/users');
+  }
+
+  deleteUser(user:string){
+    return this.http.delete<any>(`http://localhost:3000/users/${user}`);
+  }
+
+  updateJobs(user:string,jobs:number){
+    return this.http.put<any>(`http://localhost:3000/users/${user}`,{completedjobs:jobs});
+  } 
 
   isLogged() {
       return true;
   }
 
-  getUsers(){
-    return this.http.get<any>('http://localhost:3000/users/all');
-  }
 
   getToken(){
     if(localStorage.getItem('user_token') !=null){

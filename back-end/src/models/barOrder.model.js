@@ -7,7 +7,8 @@ let barOrderSchema= new Schema({
 
     table:String,
     waiter_id:String,
-    status:Number,
+    progress:Number,
+    status:String,
     barOrderNumber:Number,
     items:Array,
 });

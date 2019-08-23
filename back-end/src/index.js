@@ -64,11 +64,22 @@ app.use(cors({
     socket.on('barOrderReady',function(){
       socket.broadcast.emit('update_barMessages');
     })
+
+    socket.on('deleted_user',function(){
+      console.log("deleted user");
+      socket.broadcast.emit('update_users');
+    })
+
+    socket.on('updated_user',function(){
+      socket.broadcast.emit('update_users');
+    })
   
     socket.on('disconnect', function() {
       console.log("Bye bye " + socket.decoded_token.username)
       //delete global.userSocket[user];
     });
+
+    
   });
 
 // inizializiamo passoport

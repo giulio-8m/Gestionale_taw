@@ -1,7 +1,7 @@
 <br>
 <div class="container" *ngFor="let order of orders; let i = index" >
 
-  <div *ngIf="order.status <'99.9'" class="bg-white rounded-lg p-1 shadow row uk-margin-bottom" id="{{order._id}}" >
+  <div *ngIf="order.status == 'ongoing' " class="bg-white rounded-lg p-1 shadow row uk-margin-bottom" id="{{order._id}}" >
     <div class="col-6 border-right ">
         <br>
         <h1 class="text-center font-weight-bold"> Tavolo</h1>
@@ -22,7 +22,7 @@
           <span class="progress-bar border-success"></span>
         </span>
         <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-          <div class="h2 font-weight-bold">{{order.status | number:'1.0-0'}}<sup class="small">%</sup></div>
+          <div class="h2 font-weight-bold">{{order.progress | number:'1.0-0'}}<sup class="small">%</sup></div>
         </div>
       </div>
       <!-- END -->

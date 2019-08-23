@@ -12,6 +12,7 @@ export class DeskComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.time=new Date();
     setInterval(() => {
       this.time = new Date();
    }, 1000);

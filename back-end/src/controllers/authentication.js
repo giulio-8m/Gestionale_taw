@@ -83,12 +83,46 @@ const getUsers = (req,res)=>{
             return res.status(401).json(info);
         }
         })(req, res);
-  
-
 };
+
+const updateUser=(req,res)=>{
+    console.log("updating jobs of");
+    if(req.params.id){
+        console.log(req.params.id);
+        User.findOne({username:req.params.id})
+        .then(user => {
+            if(req.body.completedjobs){
+                user.completedjobs+=req.body.completedjobs;
+                user.update((err)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        res.status(200).json("aggiornato lavori completati");
+                    }
+                });
+            }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+    }
+}
+
+const deleteUser=(req,res)=>{
+    User.deleteOne({username:req.params.id},(err)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.status(200).json("utente cancellato");
+        }
+    })
+}
 
 module.exports = {
     signIn,
     signUp, 
-    getUsers
+    getUsers,
+    updateUser,
+    deleteUser
 };

@@ -6,7 +6,7 @@ export class User {
       this.role=role;
       this.salt=null;
       this.status=status;
-      this.completedjobs=completedjobs;
+      this.completedjobs=0;
    }
 
    username:string;

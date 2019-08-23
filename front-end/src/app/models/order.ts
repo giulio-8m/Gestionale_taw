@@ -7,7 +7,8 @@ export class Order{
         this.table=table;
         this.waiter_id=waiter_id;
         this.worker_id=null;
-        this.status=0;
+        this.status="ongoing";
+        this.progress=0;
         this.kitchenOrderNumber=null;
         this.barOrderNumber=null;
         this.items=new Array();
@@ -17,7 +18,8 @@ export class Order{
     table:string;
     waiter_id:string;
     worker_id:string;
-    status:number;
+    status:string;
+    progress:number;
     kitchenOrderNumber:number;
     barOrderNumber:number;
     items:Array<MenuItem>;

@@ -3,6 +3,7 @@ import { Table } from 'src/app/models/table';
 import { SocketService } from 'src/app/services/socket.service';
 import { TablesService } from 'src/app/services/tables.service';
 import { Router } from '@angular/router';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-tables-desk',
@@ -16,7 +17,7 @@ export class TablesDeskComponent implements OnInit {
   tables:Array<Table>;
   errorMessage:String;
 
-  constructor(private socketService:SocketService,private tablesService:TablesService,private router:Router) { }
+  constructor(private socketService:SocketService,private ordersService:OrdersService,private tablesService:TablesService,private router:Router) { }
 
   ngOnInit() {
     this.nClients=0;
@@ -46,11 +47,8 @@ export class TablesDeskComponent implements OnInit {
     this.tablesService.bookTable(table.code,table.clientsNumber).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{ this.socketService.socket.emit('booked_table');}
     );
-    
-    this.socketService.socket.emit('booked_table');
-
   }
 
   ordine(event,table:Table){

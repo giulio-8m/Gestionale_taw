@@ -7,8 +7,8 @@ import { Order } from '../models/order';
 })
 export class OrdersService {
 
-  constructor(private http:HttpClient) { }
 
+  constructor(private http:HttpClient) { }
 
   sendBarOrder(order:Order){
     return this.http.post<any>('http://localhost:3000/orders/bar',order);
@@ -16,6 +16,13 @@ export class OrdersService {
 
   sendKitchenOrder(order:Order){
     return this.http.post<any>('http://localhost:3000/orders/kitchen',order);
+  }
+
+  getOrders(query?:string){
+    if(query)
+      return this.http.get<any>(`http://localhost:3000/orders${query}`);
+    else 
+      return this.http.get<any>(`http://localhost:3000/orders`);
   }
 
   getBarOrders(query?:string){
@@ -49,13 +56,7 @@ export class OrdersService {
     return this.http.delete<any>('http://localhost:3000/orders/kitchen',{});
   }
 
-  getKitchenOrdersByWaiter(waiter:string){
-    return this.http.get<any>(`http://localhost:3000/orders/kitchen/${waiter}`);
-  }
-
-  getBarOrdersByWaiter(waiter:string){
-    return this.http.get<any>(`http://localhost:3000/orders/bar/${waiter}`);
-  }
+  
 
 
 

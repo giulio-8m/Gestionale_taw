@@ -18,10 +18,8 @@ export class TablesComponent implements OnInit {
   constructor(private socketService:SocketService,private tablesService:TablesService,private router:Router) { }
 
   ngOnInit() {
-    this.nClients=0;
-    
+    this.nClients=0;   
     this.getTables();
-
     this.socketService.socket.on('update_tables',()=>{
       console.log("ricevuto messaggio");
       this.getTables();
@@ -43,13 +41,14 @@ export class TablesComponent implements OnInit {
   book(table:Table){
     console.log(`booking ${table.code} for ${table.clientsNumber}`);
     this.tablesService.bookTable(table.code,table.clientsNumber).subscribe(
-      (res)=>console.log(res),
+      (res)=>{
+        console.log(res+"diocane"); 
+      },
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{  console.log("booking table");
+      this.socketService.socket.emit('booked_table');}
+       
     );
-    
-    this.socketService.socket.emit('booked_table');
-
   }
 
   ordine(event,table:Table){

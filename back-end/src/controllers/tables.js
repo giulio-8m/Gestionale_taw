@@ -26,17 +26,27 @@ const generateTable = (req,res)=>{
 
 const getTable=(req,res)=>{
 
-    res.status(200).json(res.params.id);
+    Table.findOne({code:req.params.id},(err,table)=>{
+        if(err){
+            return err;
+        }else{
+            res.status(200).json(table);
+        } 
+    });
 
 }
 
 const bookTable=(req,res)=>{
     Table.findOne({code:req.params.id},(err,table)=>{
         if(err){
-            return err;
+            throw new Error(err);
         }else{
             table.clientsNumber=req.body.clients;
-            table.save();
+            table.save().then((doc)=>{
+                res.status(200).json(doc);
+            }).catch((err)=>{
+                throw new Error(err);
+            });
 
         } 
     });

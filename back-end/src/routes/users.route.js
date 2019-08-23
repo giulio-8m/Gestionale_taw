@@ -2,7 +2,12 @@ const express = require('express');
 const userModel= require ('../models/user.model');
 const controllerAuth = require ('../controllers/authentication');
 const router=express.Router();
+const passport=require('passport');
 
+// Passport settings
+//require('../config/passport.config');
+// Include in path's middlewares for jwt authentication
+const passportJwtAuth = passport.authenticate('jwt', {session: false});
 
 /*
 // localhost:3000/users?name=cane&age=22
@@ -42,11 +47,15 @@ router.get('/error',(req,res)=>{
     throw new Error("errore di errori");
 });*/
 
-router.post('/users/sign-in',controllerAuth.signIn);
+router.get('/users',passportJwtAuth,controllerAuth.getUsers);
 
+
+router.post('/users/sign-in',controllerAuth.signIn);
 router.post('/users/sign-up',controllerAuth.signUp);
 
-router.get('/users/all',controllerAuth.getUsers);
+router.put('/users/:id',passportJwtAuth,controllerAuth.updateUser);
+
+router.delete('/users/:id',passportJwtAuth,controllerAuth.deleteUser);
 
 
 module.exports=router;

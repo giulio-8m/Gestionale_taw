@@ -7,7 +7,8 @@ let kitchenOrderSchema= new Schema({
 
     table:String,
     waiter_id:String,
-    status:Number,
+    status:String,
+    progress:Number,
     kitchenOrderNumber:Number,
     items:Array,
 });

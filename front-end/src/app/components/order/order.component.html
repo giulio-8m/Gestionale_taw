@@ -1,8 +1,7 @@
 
 <br>
-<h1 class="title">Ordine Tavolo :{{tableCode}}</h1>
+<h1 class="title">Ordine Tavolo: {{tableCode}}</h1>
 <hr>
-
 <div class="container">
 
   <!-- Button to Open the Modal -->
@@ -22,12 +21,8 @@
   </button>
   <br>
   <div class=" justify-content-between fle">
-
-    
-
-    <button class="btn btn-danger" (click)="eraseOrder()"><i class="fas fa-trash-alt fa-4x"><span class="sp">Cancella</span></i></button>
-    <button class="btn btn-success" (click)="sendOrder()"><i class="fas fa-check fa-4x"><span class="sp">Invia</span></i></button>
-    
+    <button routerLink="/tables" class="btn btn-danger" (click)="eraseOrder()"><i class="fas fa-reply fa-4x"><span class="sp">GoBack</span></i></button>
+    <button routerLink="/tables" class="btn btn-success" (click)="sendOrder()"><i class="fas fa-check fa-4x"><span class="sp">Invia</span></i></button>
   </div>
   <br>
 

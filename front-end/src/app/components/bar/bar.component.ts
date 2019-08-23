@@ -3,6 +3,7 @@ import { Order } from 'src/app/models/order';
 import { OrdersService } from 'src/app/services/orders.service';
 import { MenuItem } from 'src/app/models/menu';
 import { SocketService } from 'src/app/services/socket.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-bar',
@@ -13,7 +14,7 @@ export class BarComponent implements OnInit {
 
   orders:Array<Order>;
 
-  constructor(private socketService:SocketService,private ordersService:OrdersService) { }
+  constructor(private socketService:SocketService,private usersService:AuthService,private ordersService:OrdersService) { }
 
   ngOnInit() {
 
@@ -56,9 +57,8 @@ export class BarComponent implements OnInit {
 
   update(order:Order){
     let progressBar:string='#'+order._id;
-
     $(progressBar).find(".progress").each(function() {
-      let value=order.status;
+      let value=order.progress;
       var left = $(this).find('.progress-left .progress-bar');
       var right = $(this).find('.progress-right .progress-bar');
   
@@ -89,25 +89,40 @@ export class BarComponent implements OnInit {
     this.ordersService.updateBarOrder(order).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{this.socketService.socket.emit('barOrder');}
     );
-    this.socketService.socket.emit('barOrder');
+   
   }
 
   finish(dish:MenuItem,order:Order){
     dish.status="finish";
     let prop:number=100/order.items.length;
-    order.status+=prop;
+    order.progress+=prop;
     this.update(order);
-    this.ordersService.updateBarOrder(order).subscribe(
+
+    this.usersService.updateJobs(this.usersService.user.username,1).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
       ()=>console.log("done")
     );
-    this.socketService.socket.emit('barOrder');
-    if(order.status>99.9){
+
+    if(order.progress>99.9){
+      order.status="completed";
+    }
+
+    this.ordersService.updateBarOrder(order).subscribe(
+      (res)=>console.log(res),
+      (err)=>console.log(err),
+      ()=>{ 
+        this.socketService.socket.emit('barOrder');
+       }
+    );
+
+    if(order.status=="completed"){
       this.socketService.socket.emit('barOrderReady');
     }
+
+   
 
   }
 

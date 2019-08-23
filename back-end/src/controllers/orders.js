@@ -11,11 +11,40 @@ const getOrder=(req,res)=>{
 };
 
 const getOrders=(req,res)=>{
-    /*
-    Order.find({}).then(function(orders){
-        res.status(200).json(orders);
-    });*/
+    
+    if(req.query.waiter){
+        let ord = [];
+        BarOrder.find({waiter_id:req.query.waiter}).then(function(orders){
+            ord = ord.concat(orders);
+            KitchenOrder.find({waiter_id:req.query.waiter}).then(function(orders){
+                ord=ord.concat(orders);
+                res.status(200).json(ord);
+            });
+        }); 
+
+    }else if(req.query.table){
+
+        let ord = [];
+        BarOrder.find({table:req.query.table}).then(function(orders){
+            ord = ord.concat(orders);
+            KitchenOrder.find({table:req.query.table}).then(function(orders){
+                ord=ord.concat(orders);
+                res.status(200).json(ord);
+            });
+        });   
+    }else{
+        let ord = [];
+        BarOrder.find({}).then(function(orders){
+            ord = ord.concat(orders);
+            KitchenOrder.find({}).then(function(orders){
+                ord=ord.concat(orders);
+                res.status(200).json(ord);
+            });
+        });        
+    }  
 };
+
+
 
 const newBarOrder=(req,res)=>{
     
@@ -23,6 +52,7 @@ const newBarOrder=(req,res)=>{
         order.table=req.body.table;
         order.waiter_id=req.body.waiter_id;
         order.status=req.body.status;
+        order.progress=req.body.progress;
         order.items=req.body.items;
 
         console.log("i'm trying to setOrder right now before save!!\n");
@@ -44,9 +74,8 @@ const newKitchenOrder=(req,res)=>{
         order.table=req.body.table;
         order.waiter_id=req.body.waiter_id;
         order.status=req.body.status;
+        order.progress=req.body.progress;
         order.items=req.body.items;
-
-
 
         console.log("i'm trying to setOrder right now before save!!\n");
        // console.log(order.toJSON());
@@ -66,14 +95,17 @@ const getKitchenOrders=(req,res)=>{
     if(req.query.waiter){
         KitchenOrder.find({waiter_id:req.query.waiter}).then(function(orders){
             res.status(200).json(orders);
+
         });
     }else if(req.query.table){
         KitchenOrder.find({table:req.query.table}).then(function(orders){
             res.status(200).json(orders);
+
         });
     }else{
         KitchenOrder.find({}).then(function(orders){
             res.status(200).json(orders);
+
         });
     }
 };
@@ -82,21 +114,20 @@ const getBarOrders=(req,res)=>{
     console.log("hello bar");
     if(req.query.waiter){
         BarOrder.find({waiter_id:req.query.waiter}).then(function(orders){
-            //  console.log(orders);
-              res.status(200).json(orders);
+            res.status(200).json(orders);
+
         });
     }else if(req.query.table){
         BarOrder.find({table:req.query.table}).then(function(orders){
-            //  console.log(orders);
-              res.status(200).json(orders);
+            res.status(200).json(orders);
+
         });
     }else{
         BarOrder.find({}).then(function(orders){
-            //  console.log(orders);
-              res.status(200).json(orders);
+            res.status(200).json(orders);
+
         });
-    }
-   
+    }  
 };
 
 
@@ -107,6 +138,7 @@ const updateBarOrder=(req,res)=>{
             console.log(err);
         }else{
             order.status=req.body.status;
+            order.progress=req.body.progress;
             order.items=req.body.items;
             order.save((err) => {
                 if (err){
@@ -126,6 +158,7 @@ const updateKitchenOrder=(req,res)=>{
             console.log(err);
         }else{
             order.status=req.body.status;
+            order.progress=req.body.progress;
             order.items=req.body.items;
             order.save((err) => {
                 if (err){
@@ -177,6 +210,7 @@ const getKitchenOrdersByWaiter=(req,res)=>{
 
 
 module.exports = {
+    getOrders,
     getBarOrders,
     newBarOrder,
     getKitchenOrders,
