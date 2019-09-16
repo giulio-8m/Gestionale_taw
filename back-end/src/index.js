@@ -20,9 +20,12 @@ const socketioJwt=require('socketio-jwt');
 global.io = require('socket.io')(server);
 global.socketUsers=[];
 
+
+
+
 const config = require('./config/passport.config');
 
-server.listen(port,()=>console.log(`lisening on port ${port} allah uh akbar`));
+server.listen(port,()=>console.log(`lisening on port ${port}`));
 
 app.use(cors({
     origin: function(origin, callback){
@@ -58,10 +61,12 @@ app.use(cors({
     });
 
     socket.on('kitchenOrderReady',function(){
+      console.log("kitcehn order ready");
       socket.broadcast.emit('update_kitchenMessages');
     });
 
     socket.on('barOrderReady',function(){
+      console.log("bar order ready");
       socket.broadcast.emit('update_barMessages');
     })
 

@@ -12,13 +12,12 @@ import { OrdersService } from 'src/app/services/orders.service';
 })
 export class HomeComponent implements OnInit {
 
-  cane="diocane";
+  cane="hello there";
 
   name:string;
   price:number;
   preparationTime:number;
   type:string;
-
   menu:MenuItem;
   
   constructor(private auth:AuthService,private tables:TablesService,private menus:MenuService,private orders:OrdersService) { }

@@ -27,7 +27,6 @@ export class SocketService {
         })
         .on('disconnect', function(){
           console.log("disconnected");
-          this.socket=null;
         });
   }
 

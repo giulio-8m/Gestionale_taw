@@ -1,7 +1,10 @@
 <br>
-<div class="container" *ngFor="let order of orders; let i = index" >
+<div class="container" >
+  <ng-container *ngFor="let order of orders; let i = index" >
 
-  <div *ngIf="order.status <'99.9'" class="bg-white rounded-lg p-1 shadow row uk-margin-bottom" id="{{order._id}}" >
+
+  <div *ngIf="order.status== 'ongoing'" class="bg-white rounded-lg p-1 shadow row " id="{{order._id}}" >
+
     <div class="col-6 border-right ">
         <br>
         <h1 class="text-center font-weight-bold"> Tavolo</h1>
@@ -22,7 +25,7 @@
           <span class="progress-bar border-success"></span>
         </span>
         <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-          <div class="h2 font-weight-bold">{{order.status | number:'1.0-0'}}<sup class="small">%</sup></div>
+          <div class="h2 font-weight-bold">{{order.progress | number:'1.0-0'}}<sup class="small">%</sup></div>
         </div>
       </div>
       <!-- END -->
@@ -43,10 +46,10 @@
       <div class="row align-items-center border-bottom">
           <div class="col-7">
               <h2 class="h4 font-weight-bold text-center m-2">Portata</h2>
-            </div>
-            <div class="col-5">
-              <h2 class="h4 font-weight-bold text-center m-2">Status</h2>
-            </div>
+          </div>
+          <div class="col-5">
+            <h2 class="h4 font-weight-bold text-center m-2">Status</h2>
+          </div>
       </div>
       
       <div  class="row align-items-center border-bottom " *ngFor="let item of order.items">
@@ -79,9 +82,9 @@
         <div class="col-5 p-0">
             <ng-container *ngIf="statusCheck(item)!='3'; then starts; else ended"></ng-container>
             <ng-template #starts>
-              <button disabled *ngIf="statusCheck(item)=='1'" class="btn btn-success pl-2 pr-2 pt-1 pb-0" (click)="start(item,order)"><i class="far fa-caret-square-right fa-3x"><h5 class="mb-0">Start</h5></i></button>
-              <button  disabled *ngIf="statusCheck(item)=='2'" class="btn btn-warning pl-1 pr-1 pt-1 pb-0"><i class="fas fa-spinner fa-pulse fa-3x"></i><h5 class="mb-0">cookin</h5></button>
-              <button disabled class="btn btn-danger ml-1 pl-2 pr-2 pt-1 pb-0"(click)="finish(item,order)"><i class="fas fa-check-circle fa-3x"><h5 class="mb-0">Finish</h5></i></button>
+              <button  disabled *ngIf="statusCheck(item)=='1'" class="btn btn-success pl-2 pr-2 pt-1 pb-0" (click)="start(item,order)"><i class="far fa-caret-square-right fa-3x"><h5 class="mb-0">Inizio</h5></i></button>
+              <button disabled *ngIf="statusCheck(item)=='2'" class="btn btn-warning pl-1 pr-1 pt-1 pb-0"><i class="fas fa-spinner fa-pulse fa-3x"></i><h5 class="mb-0">... .. ...</h5></button>
+              <button  disabled class="btn btn-danger ml-1 pl-2 pr-2 pt-1 pb-0"(click)="finish(item,order)"><i class="fas fa-check-circle fa-3x"><h5 class="mb-0">Fine</h5></i></button>
             </ng-template>
             <ng-template #ended>
               <h1 class="completed font-weight-bold">Pronto</h1>
@@ -94,6 +97,10 @@
     </div>
     <br>
   </div>
-  <br>
-
+  <br *ngIf="order.status== 'ongoing'">
+</ng-container>
+<br>
+<div class="fixed-bottom  d-flex justify-content-between">
+    <i  routerLink="/desk" class="fas fa-chevron-circle-left fa-3x text-center" style="color:blue;"><h5 class="mb-0 text-center">Indietro</h5></i>
+</div>
 </div>

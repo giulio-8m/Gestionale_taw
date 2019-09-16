@@ -10,7 +10,7 @@
     <div class="card">
 
         <header class="card-header">
-                <a routerLink="/sign-up" href="" class="float-right btn btn-outline-primary mt-1">Sign Up</a>
+                
                 <h4 class="card-title mt-2">Sign In</h4>
         </header>
 
@@ -21,7 +21,7 @@
             <!--username-->
                 <div class="form-group">
                         <label>Username</label>
-                        <input type="text" #username="ngModel" class="form-control " [class.is-invalid]="username.invalid && username.touched" placeholder="Perillo" name="username" [(ngModel)]="user.username" required>
+                        <input type="text" #username="ngModel" class="form-control " [class.is-invalid]="username.invalid && username.touched" placeholder="Username" name="username" [(ngModel)]="user.username" required>
                         <span class="text-danger" [class.d-none]="username.valid || username.untouched">Username non valido</span>
                 </div> 
                 
@@ -38,7 +38,7 @@
                 </div>                                         
             </form>
         </article> 
-        <div class="border-top card-body text-center">Non possiedi già un account? <a routerLink="/sign-up" href="">Sign Up</a></div>
+       
 
     </div> <!-- card.// -->
     </div> <!-- col.//-->

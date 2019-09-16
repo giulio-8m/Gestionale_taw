@@ -18,17 +18,22 @@ export class AuthguardService implements CanActivate {
           if(this.auth.user.role=="Barista" && route.routeConfig.path=="bar"){
             return true;
           }
-          if(this.auth.user.role=="Cameriere" && route.routeConfig.path=="tables" || route.routeConfig.path=="orders/:id"){
+          if(this.auth.user.role=="Cameriere" && (route.routeConfig.path=="tables" || route.routeConfig.path=="orders/:id")){
             return true;
           }
           if(this.auth.user.role=="Cuoco" && route.routeConfig.path=="kitchen"){
             return true;
           }
-
-          if(this.auth.user.username=="cane"){
+          if(this.auth.user.role=="Cassa" && (route.routeConfig.path=="sign-up" ||
+                                              route.routeConfig.path=="check-out/:id" ||
+                                              route.routeConfig.path=="desk" || 
+                                              route.routeConfig.path=="tables-desk" || 
+                                              route.routeConfig.path=="orders-desk" || 
+                                              route.routeConfig.path=="users" || 
+                                              route.routeConfig.path=="statistics" || 
+                                              route.routeConfig.path=="orders-desk/:id") ){
             return true;
           }
-
           this.router.navigate(['unauthorized']);
           return false;
       }else{

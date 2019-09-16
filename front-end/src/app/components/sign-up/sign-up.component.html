@@ -6,21 +6,17 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
     <div class="card">
-
         <header class="card-header">
-                <a routerLink="/sign-in" href="" class="float-right btn btn-outline-primary mt-1">Sign In</a>
                 <h4 class="card-title mt-2">Sign up</h4>
         </header>
 
-        <article class="card-body">
-          
-           
+        <article class="card-body">    
             <form #signUpForm="ngForm" (ngSubmit)="submit()" novalidate>
 
             <!--username-->
                 <div class="form-group">
                         <label>Username</label>
-                        <input type="text" #username="ngModel" class="form-control " [class.is-invalid]="username.invalid && username.touched" placeholder="Perillo" name="username" [(ngModel)]="user.username" required>
+                        <input type="text" #username="ngModel" class="form-control " [class.is-invalid]="username.invalid && username.touched" placeholder="Username" name="username" [(ngModel)]="user.username" required>
                         <span class="text-danger" [class.d-none]="username.valid || username.untouched">Username non valido</span>
                 </div> 
             <!--role-->
@@ -57,10 +53,9 @@
                     <button [disabled]="signUpForm.form.invalid || !passwordMatching()" type="submit" class="btn btn-primary btn-block">Sign Up</button>
                 </div>  
 
-                <small class="text-muted">Facendo click sul bottone 'Sign Up', stai confermado di accettare le nostre <br> Condizioni di Utilizzo e Privacy Policy.</small>                                          
+                <small class="text-muted">Stai per registrare un nuovo utente <br> fagli accettare le Condizioni di Utilizzo e Privacy Policy.</small>                                          
             </form>
-        </article> 
-        <div class="border-top card-body text-center">Possiedi già un account? <a routerLink="/sign-in" href="">Sign In</a></div>
+        </article>
 
     </div> <!-- card.// -->
     </div> <!-- col.//-->

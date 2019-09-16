@@ -82,10 +82,8 @@ export class CheckOutComponent implements OnInit {
           );
         }
       }
-    
   }
  
-
   updateJobs(waiters:any){
     console.log(waiters);
     for(let waiter in waiters){

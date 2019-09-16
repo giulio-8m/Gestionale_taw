@@ -15,8 +15,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./order.component.css']
 })
 export class OrderComponent implements OnInit {
-
-  
+ 
   tableCode:string;
   firstDishes:Array<MenuItem>;
   secondDishes:Array<MenuItem>;

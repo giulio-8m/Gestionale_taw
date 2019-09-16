@@ -12,10 +12,18 @@ import { SocketService } from 'src/app/services/socket.service';
 })
 export class UsersComponent implements OnInit {
 
-  users:Array<User>
+  users:Array<User>;
+  waiters:Array<User>;
+  chefs:Array<User>;
+  barMans:Array<User>;
+  desks:Array<User>;
+
   totalServices:number;
+
   totalDrinks:number;
-  totalDishes:number;
+
+  totalDishes:number; 
+
   chart:any;
   stats=[];
 
@@ -26,10 +34,18 @@ export class UsersComponent implements OnInit {
     this.totalServices=0;
     this.totalDishes=0;
     this.totalDrinks=0;
-    this.getUsers();
+    
+    this.getWaiters();
+    this.getBarMans();
+    this.getChefs();
+    this.getDesks();
+
 
     this.socketService.socket.on('update_users',()=>{
-      this.getUsers();
+      this.getWaiters();
+      this.getBarMans();
+      this.getChefs();
+      this.getDesks();
     });
     
   }
@@ -53,6 +69,40 @@ export class UsersComponent implements OnInit {
         }
       }
     );
+  }
+
+
+  getWaiters(){
+    this.usersService.getUsers('?role=Cameriere').subscribe(
+      (res)=>this.waiters=res,
+      (err)=>console.log(err),
+      ()=>console.log("done")
+    )
+  }
+
+  getChefs(){
+    this.usersService.getUsers('?role=Cuoco').subscribe(
+      (res)=>this.chefs=res,
+      (err)=>console.log(err),
+      ()=>console.log("done")
+    )
+  }
+
+  getBarMans(){
+    this.usersService.getUsers('?role=Barista').subscribe(
+      (res)=>this.barMans=res,
+      (err)=>console.log(err),
+      ()=>console.log("done")
+    )
+  }
+
+
+  getDesks(){
+    this.usersService.getUsers('?role=Cassa').subscribe(
+      (res)=>this.desks=res,
+      (err)=>console.log(err),
+      ()=>console.log("done")
+    )
   }
 
   set(role:string){

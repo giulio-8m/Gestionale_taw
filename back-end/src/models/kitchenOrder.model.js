@@ -11,6 +11,7 @@ let kitchenOrderSchema= new Schema({
     progress:Number,
     kitchenOrderNumber:Number,
     items:Array,
+    date:Date
 });
 
 kitchenOrderSchema.plugin(AutoIncrement,{inc_field: 'kitchenOrderNumber'});

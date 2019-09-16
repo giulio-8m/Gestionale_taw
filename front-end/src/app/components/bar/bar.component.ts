@@ -4,7 +4,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { MenuItem } from 'src/app/models/menu';
 import { SocketService } from 'src/app/services/socket.service';
 import { AuthService } from 'src/app/services/auth.service';
-
+import * as $ from "jquery";
 @Component({
   selector: 'app-bar',
   templateUrl: './bar.component.html',
@@ -14,16 +14,13 @@ export class BarComponent implements OnInit {
 
   orders:Array<Order>;
 
-  constructor(private socketService:SocketService,private usersService:AuthService,private ordersService:OrdersService) { }
+  constructor(private socketService:SocketService,private ordersService:OrdersService,private usersService:AuthService) { }
 
   ngOnInit() {
-
     this.barOrders();
     this.socketService.socket.on('update_barOrders',()=>{
-      console.log("arrivato messaggio bar socket");
       this.barOrders();
     })
-
   }
 
   barOrders(){
@@ -31,7 +28,7 @@ export class BarComponent implements OnInit {
       (res)=>this.orders=res,
       (err)=>console.log(err),
       ()=>{
-        
+        console.log(this.orders);
       }
     );
   }
@@ -57,18 +54,17 @@ export class BarComponent implements OnInit {
 
   update(order:Order){
     let progressBar:string='#'+order._id;
-    $(progressBar).find(".progress").each(function() {
-      let value=order.progress;
-      var left = $(this).find('.progress-left .progress-bar');
-      var right = $(this).find('.progress-right .progress-bar');
-  
-        if (value <= 50) {
-          right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
-        } else {
-          right.css('transform', 'rotate(180deg)')
-          left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
-        }
-      });
+      $(progressBar).find(".progress").each(function() {
+        let value=order.progress;
+        var left = $(this).find('.progress-left .progress-bar');
+        var right = $(this).find('.progress-right .progress-bar');
+          if (value <= 50) {
+            right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
+          } else {
+            right.css('transform', 'rotate(180deg)')
+            left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
+          }
+        });
   }
 
 
@@ -77,21 +73,18 @@ export class BarComponent implements OnInit {
       return 1;
     }else if(dish.status=="cooking"){
       return 2;
-    }
-    else{
+    }else{
       return 3;
     }
-
   }
 
   start(dish:MenuItem,order:Order){
     dish.status="cooking";
-    this.ordersService.updateBarOrder(order).subscribe(
+    this.ordersService.updateKitchenOrder(order).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
       ()=>{this.socketService.socket.emit('barOrder');}
     );
-   
   }
 
   finish(dish:MenuItem,order:Order){
@@ -99,30 +92,24 @@ export class BarComponent implements OnInit {
     let prop:number=100/order.items.length;
     order.progress+=prop;
     this.update(order);
-
     this.usersService.updateJobs(this.usersService.user.username,1).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{this.socketService.socket.emit('updated_user');}
     );
 
     if(order.progress>99.9){
       order.status="completed";
     }
-
-    this.ordersService.updateBarOrder(order).subscribe(
+    this.ordersService.updateKitchenOrder(order).subscribe(
       (res)=>console.log(res),
       (err)=>console.log(err),
-      ()=>{ 
-        this.socketService.socket.emit('barOrder');
-       }
+      ()=>{this.socketService.socket.emit('barOrder');}
     );
 
     if(order.status=="completed"){
       this.socketService.socket.emit('barOrderReady');
     }
-
-   
 
   }
 

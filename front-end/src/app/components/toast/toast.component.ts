@@ -20,7 +20,7 @@ export class ToastComponent implements OnInit {
     this.messages=null;
 
     if(this.userService.user && this.userService.user.role=="Cameriere"){
-      console.log("canemerda tost cameriere");
+      console.log(" tost cameriere");
       this.getKitchenMessages();
       this.getBarMessages();
       this.socketService.socket.on('update_kitchenMessages',()=>{
@@ -41,7 +41,7 @@ export class ToastComponent implements OnInit {
         console.log(this.messages);
         for(let i=0;i<this.messages.length;i++){
           console.log(this.messages[i]);
-          if(this.messages[i].status>=99.9 && this.messages[i].status<101){
+          if(this.messages[i].status=="completed" ){
             this.pop(this.messages[i],"Kitchen");
           }
         }
@@ -58,7 +58,7 @@ export class ToastComponent implements OnInit {
         console.log(this.messages);
         for(let i=0;i<this.messages.length;i++){
           console.log(this.messages[i]);
-          if(this.messages[i].status>=99.9 && this.messages[i].status<101){
+          if(this.messages[i].status=="completed" ){
             this.pop(this.messages[i],"Bar");
           }
         }
@@ -75,14 +75,26 @@ export class ToastComponent implements OnInit {
     }
     this.toastr.success('Table : '+order.table, 'Order '+ orderNumber+ ' from '+type+' ready',{
       disableTimeOut: true
-    });
+    }).onTap.subscribe(
+      ()=>{
+        if(type=="Kitchen"){
+          order.status="delivered";
+          this.ordersService.updateKitchenOrder(order).subscribe(
+            (res)=>console.log(res),
+            (err)=>console.log(err),
+            ()=>console.log("done")
+          );
+        }else{
+          order.status="delivered";
+          this.ordersService.updateBarOrder(order).subscribe(
+            (res)=>console.log(res),
+            (err)=>console.log(err),
+            ()=>console.log("done")
+          );
+        }
+      }
+    );
   }
 
-  dismiss(order:Order){
-    console.log("diomerdacane");
-    this.toastr.success('Table : '+"sasdq", 'Order ready',{
-      disableTimeOut: true
-    });
-  }
 
 }

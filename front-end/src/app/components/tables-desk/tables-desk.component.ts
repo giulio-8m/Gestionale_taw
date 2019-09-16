@@ -12,18 +12,15 @@ import { OrdersService } from 'src/app/services/orders.service';
 })
 export class TablesDeskComponent implements OnInit {
 
-
   nClients:Number;
   tables:Array<Table>;
   errorMessage:String;
 
-  constructor(private socketService:SocketService,private ordersService:OrdersService,private tablesService:TablesService,private router:Router) { }
+  constructor(private socketService:SocketService,private tablesService:TablesService,private router:Router,ordersService:OrdersService) { }
 
   ngOnInit() {
-    this.nClients=0;
-    
+    this.nClients=0;   
     this.getTables();
-
     this.socketService.socket.on('update_tables',()=>{
       console.log("ricevuto messaggio");
       this.getTables();
@@ -42,17 +39,51 @@ export class TablesDeskComponent implements OnInit {
     return seats==0;
   }
 
+  previous(event,table:Table){
+    this.router.navigate(['/orders-desk',table.code]);
+  }
+
   book(table:Table){
     console.log(`booking ${table.code} for ${table.clientsNumber}`);
     this.tablesService.bookTable(table.code,table.clientsNumber).subscribe(
-      (res)=>console.log(res),
+      (res)=>{
+        console.log(res+"diocane"); 
+      },
       (err)=>console.log(err),
-      ()=>{ this.socketService.socket.emit('booked_table');}
+      ()=>{  console.log("booking table");
+      this.socketService.socket.emit('booked_table');}
+       
     );
   }
 
   ordine(event,table:Table){
     this.router.navigate(['/check-out',table.code]);
   }
+
+    search(){
+    console.log("searching");
+    var input = (<HTMLInputElement>document.getElementById("searchTables")).value;
+    var filter = input.toLowerCase();
+    console.log(filter);
+    var listOfUsers = document.getElementById("list-of-ttables");
+    console.log(listOfUsers);
+    var ttables = listOfUsers.getElementsByClassName("ttable");
+    console.log(ttables);
+    var ttable;
+    var ttablename:string;
+    for(var i=0;i<ttables.length;i++){
+      ttable=ttables[i].getElementsByClassName('code')[0];
+      console.log(ttable);
+      ttablename=ttable.textContent.toLowerCase();
+      console.log(ttablename)
+      if(ttablename.indexOf(filter) > -1) {
+        $(ttables[i]).css('display' , "");
+      } else {
+        $(ttables[i]).css('display' , "none");
+      }
+    }
+  }
+
+
 
 }

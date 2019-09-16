@@ -70,23 +70,21 @@ const signUp = (req,res)=>{
 };
 
 const getUsers = (req,res)=>{
-    passport.authenticate('jwt', (err, user, info) => {
-        if (err) {
-            console.log("errore qui\n");    
-            return res.status(401).json(err);
-        }
-        if (user) {  
-            User.find({}).then(function(uusers){
-                return res.status(200).json(uusers);
-            });
-        } else {
-            return res.status(401).json(info);
-        }
-        })(req, res);
+
+    if(req.query.role){
+        User.find({role:req.query.role}).then(function(users){
+            res.status(200).json(users);
+        })
+    }else{
+        User.find({}).then(function(users){
+            res.status(200).json(users);
+        })
+    }
 };
 
+
 const updateUser=(req,res)=>{
-    console.log("updating jobs of");
+    console.log(`updating user : ${req.params.id}`);
     if(req.params.id){
         console.log(req.params.id);
         User.findOne({username:req.params.id})

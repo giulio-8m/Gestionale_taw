@@ -5,6 +5,7 @@ import { OrdersService } from 'src/app/services/orders.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MenuItem } from 'src/app/models/menu';
 import * as $ from 'jquery';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-orders-desk',
@@ -13,20 +14,32 @@ import * as $ from 'jquery';
 })
 export class OrdersDeskComponent implements OnInit {
 
+  tableCode:String;
   orders:Array<Order>;
 
-  constructor(private socketService:SocketService,private ordersService:OrdersService,private usersService:AuthService) { }
+  constructor(private socketService:SocketService,private ordersService:OrdersService,private usersService:AuthService,private route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.tableCode=this.route.snapshot.paramMap.get('id');
+    if(this.tableCode){
+      this.getOrdersByTable();
+      this.socketService.socket.on('update_kitchenOrders',()=>{
+        this.getOrdersByTable();
+      })
 
-    this.getOrders();
-    this.socketService.socket.on('update_kitchenOrders',()=>{
+      this.socketService.socket.on('update_barOrders',()=>{
+        this.getOrdersByTable();
+      })
+    }else{
       this.getOrders();
-    })
+      this.socketService.socket.on('update_kitchenOrders',()=>{
+        this.getOrders();
+      })
 
-    this.socketService.socket.on('update_barOrders',()=>{
-      this.getOrders();
-    })
+      this.socketService.socket.on('update_barOrders',()=>{
+        this.getOrders();
+      })
+    }
 
   }
 
@@ -40,7 +53,16 @@ export class OrdersDeskComponent implements OnInit {
     );
   }
 
-  
+  getOrdersByTable(){
+    this.ordersService.getOrders('?table='+this.tableCode).subscribe(
+      (res)=>this.orders=res,
+      (err)=>console.log(err),
+      ()=>{
+        console.log(this.orders);
+      }
+    );
+  }
+
 
   ngAfterViewChecked(){
     if(this.orders)
@@ -63,20 +85,19 @@ export class OrdersDeskComponent implements OnInit {
 
   update(order:Order){
     let progressBar:string='#'+order._id;
-    console.log(progressBar);
-      $(progressBar).find(".progress").each(function() {
-        console.log("heeeree");
-        let value=order.progress;
-        var left = $(this).find('.progress-left .progress-bar');
-        var right = $(this).find('.progress-right .progress-bar');
-    
-          if (value <= 50) {
-            right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
-          } else {
-            right.css('transform', 'rotate(180deg)')
-            left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
-          }
-        });
+    $(progressBar).find(".progress").each(function() {
+      console.log("heeeree");
+      let value=order.progress;
+      let left = $(this).find('.progress-left .progress-bar');
+      let right = $(this).find('.progress-right .progress-bar');
+  
+      if (value <= 50) {
+        right.css('transform', 'rotate(' + (value / 100 * 360) + 'deg)')
+      } else {
+        right.css('transform', 'rotate(180deg)')
+        left.css('transform', 'rotate(' + ((value-50) / 100 * 360) + 'deg)')
+      }
+    });
   }
 
 
@@ -91,43 +112,6 @@ export class OrdersDeskComponent implements OnInit {
     }
 
   }
-
-  start(dish:MenuItem,order:Order){
-    dish.status="cooking";
-    this.ordersService.updateKitchenOrder(order).subscribe(
-      (res)=>console.log(res),
-      (err)=>console.log(err),
-      ()=>console.log("done")
-    );
-    this.socketService.socket.emit('kitchenOrder');
-  }
-
-  finish(dish:MenuItem,order:Order){
-
-    dish.status="finish";
-    let prop:number=100/order.items.length;
-    order.progress+=prop;
-    this.update(order);
-    this.ordersService.updateKitchenOrder(order).subscribe(
-      (res)=>console.log(res),
-      (err)=>console.log(err),
-      ()=>console.log("done")
-    );
-
-    this.usersService.updateJobs(this.usersService.user.username,1).subscribe(
-      (res)=>console.log(res),
-      (err)=>console.log(err),
-      ()=>console.log("done")
-    );
-
-    this.socketService.socket.emit('kitchenOrder');
-
-    if(order.progress>99.9){
-      this.socketService.socket.emit('kitchenOrderReady');
-    }
-
-  }
-
 
 
 }
