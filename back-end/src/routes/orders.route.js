@@ -19,11 +19,16 @@ router.post('/orders/bar',passportJwtAuth,controllerOrders.newBarOrder);
 router.get('/orders/kitchen',passportJwtAuth,controllerOrders.getKitchenOrders);
 router.get('/orders/bar',passportJwtAuth,controllerOrders.getBarOrders);
 
+router.get('/orders/kitchen/checkout/:table',passportJwtAuth,controllerOrders.checkOutKitchenOrder);
+router.get('/orders/bar/checkout/:table',passportJwtAuth,controllerOrders.checkOutBarOrder);
+
 router.put('/orders/kitchen/:id',passportJwtAuth,controllerOrders.updateKitchenOrder);
 router.put('/orders/bar/:id',passportJwtAuth,controllerOrders.updateBarOrder);
 
 router.delete('/orders/kitchen',passportJwtAuth,controllerOrders.deleteKitchenOrders);
 router.delete('/orders/bar',passportJwtAuth,controllerOrders.deleteBarOrders);
+
+
 
 
 

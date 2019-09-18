@@ -19,11 +19,9 @@ a{
         padding-right: 15px;
         padding-bottom: 15px;
         width: 40%;
-        
-        min-height: 100%;
+
     }
     .navbar-collapse.collapsing {
-
         -webkit-transition: left 0.2s ease;
         -o-transition: left 0.2s ease;
         -moz-transition: left 0.2s ease;

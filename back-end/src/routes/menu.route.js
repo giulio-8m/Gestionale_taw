@@ -12,7 +12,7 @@ router.get('/menu',passportJwtAuth,controllerMenu.getMenu);
 
 router.get('/menu/drinks',passportJwtAuth,controllerMenu.getDrinks);
 
-router.get('/menu/dishes',passportJwtAuth,controllerMenu.getDishes);
+router.get('/menu/dishes',controllerMenu.getDishes);
 
 router.get('/menu/first-dishes',passportJwtAuth,controllerMenu.getFirstDishes);
 

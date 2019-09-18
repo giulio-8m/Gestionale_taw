@@ -11,7 +11,9 @@ export class Order{
         this.kitchenOrderNumber=null;
         this.barOrderNumber=null;
         this.items=new Array();
-        this.date=new Date();
+        let dateS=new Date();
+        this.date=dateS.getDate()+'/'+dateS.getMonth()+'/'+dateS.getFullYear();
+          
     }
 
     _id:string;
@@ -22,6 +24,6 @@ export class Order{
     kitchenOrderNumber:number;
     barOrderNumber:number;
     items:Array<MenuItem>;
-    date:Date;
+    date:string;
 
 }

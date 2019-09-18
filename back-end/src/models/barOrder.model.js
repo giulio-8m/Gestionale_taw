@@ -11,7 +11,7 @@ let barOrderSchema= new Schema({
     status:String,
     barOrderNumber:Number,
     items:Array,
-    date:Date,
+    date:String
 });
 
 barOrderSchema.plugin(AutoIncrement,{inc_field: 'barOrderNumber'});

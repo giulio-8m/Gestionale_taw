@@ -12,7 +12,7 @@ const newBarOrder=(req,res)=>{
         order.status=req.body.status;
         order.progress=req.body.progress;
         order.items=req.body.items;
-        order.items=req.body.date;
+        order.date=req.body.date;
 
         console.log("i'm trying to setOrder right now before save!!\n");
       //  console.log(order.toJSON());
@@ -60,7 +60,27 @@ const getOrder=(req,res)=>{
 
 const getOrders=(req,res)=>{
     console.log("querying orders");
-    if(req.query.waiter){
+    if(req.query.date){
+        let ord = [];
+        BarOrder.find({date:req.query.date}).then(function(orders){
+            ord = ord.concat(orders);
+            KitchenOrder.find({date:req.query.date}).then(function(orders){
+                ord=ord.concat(orders);
+                res.status(200).json(ord);
+            });
+        });
+    }
+    else if(req.query.status){    
+        let ord = [];
+        BarOrder.find({status:req.query.status}).then(function(orders){
+            ord = ord.concat(orders);
+            KitchenOrder.find({status:req.query.status}).then(function(orders){
+                ord=ord.concat(orders);
+                res.status(200).json(ord);
+            });
+        });
+    
+    }else if(req.query.waiter){
         let ord = [];
         BarOrder.find({waiter_id:req.query.waiter}).then(function(orders){
             ord = ord.concat(orders);
@@ -102,7 +122,17 @@ const getOrders=(req,res)=>{
 
 const getKitchenOrders=(req,res)=>{
     console.log("querying kitchen orders");
-    if(req.query.waiter){
+    if(req.query.date){
+        KitchenOrder.find({date:req.query.date}).then(function(orders){
+            
+            res.status(200).json(orders);
+        });
+    }else if(req.query.status){        
+        KitchenOrder.find({status:req.query.status}).then(function(orders){
+            
+            res.status(200).json(orders);
+        }); 
+    }else if(req.query.waiter){
         KitchenOrder.find({waiter_id:req.query.waiter}).then(function(orders){
             res.status(200).json(orders);
         });
@@ -123,14 +153,23 @@ const getKitchenOrders=(req,res)=>{
 
 const getBarOrders=(req,res)=>{
     console.log("querying bar orders");
-    if(req.query.waiter){
+    if(req.query.date){
+        BarOrder.find({date:req.query.date}).then(function(orders){        
+            res.status(200).json(orders);
+        });
+    }
+    else if(req.query.status){    
+        BarOrder.find({status:req.query.status}).then(function(orders){     
+                res.status(200).json(orders);
+            });
+    }else if(req.query.waiter){
         BarOrder.find({waiter_id:req.query.waiter}).then(function(orders){
             res.status(200).json(orders);
         });
     }else if(req.query.table){
         BarOrder.find({table:req.query.table}).then(function(orders){
+            console.log(orders[0]);
             res.status(200).json(orders);
-
         });
     }else if(req.query.status){
         BarOrder.find({status:req.query.table}).then(function(orders){
@@ -206,6 +245,22 @@ const deleteKitchenOrders=(req,res)=>{
     });
 }
 
+const checkOutKitchenOrder=(req,res)=>{
+    console.log("i'm hree kitchen");
+    KitchenOrder.find().or({status:'delivered'}).or({status:'ongoing'}).and({table:req.params.table}).then(function(orders){
+        res.status(200).json(orders);
+    })
+}
+
+
+const checkOutBarOrder=(req,res)=>{
+
+    console.log("i'm hree order");
+    BarOrder.find().or({status:'delivered'}).or({status:'ongoing'}).and({table:req.params.table}).then(function(orders){
+        res.status(200).json(orders);
+    })
+}
+
 module.exports = {
     getOrders,
     getBarOrders,
@@ -216,4 +271,6 @@ module.exports = {
     updateKitchenOrder,
     deleteKitchenOrders,
     deleteBarOrders,
+    checkOutBarOrder,
+    checkOutKitchenOrder
  };

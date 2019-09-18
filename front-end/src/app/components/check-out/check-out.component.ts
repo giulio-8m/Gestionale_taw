@@ -6,6 +6,8 @@ import { Table } from 'src/app/models/table';
 import { TablesService } from 'src/app/services/tables.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SocketService } from 'src/app/services/socket.service';
+import { MenuItem } from 'src/app/models/menu';
+import { Recipt } from 'src/app/models/recipt';
 
 @Component({
   selector: 'app-check-out',
@@ -16,22 +18,28 @@ export class CheckOutComponent implements OnInit {
 
   tableCode:string;
   orders:Array<Order>;
+  barOrders:Array<Order>;
+  kitchenOrders:Array<Order>;
   total:number;
   table:Table;
   waiters:any;
   ordersToUpdate:Array<Order>;
+  cane="checked-out";
+  recipt:Recipt;
 
   constructor(private orderService:OrdersService,private tablesService:TablesService,private userService:AuthService,private socketService:SocketService,private route:ActivatedRoute) { }
 
   ngOnInit() {
+
     this.ordersToUpdate=new Array();
     console.log(this.ordersToUpdate.length);
     this.total=0;
     this.waiters=[];
     this.tableCode=this.route.snapshot.paramMap.get('id');
-
+    this.recipt=new Recipt(this.tableCode,new Array(),new Array(),0,0,0);
     this.getTable(); 
-    this.getOrders();
+    this.getBarOrders();
+    this.getKitchenOrders();
     
   }
 
@@ -43,46 +51,42 @@ export class CheckOutComponent implements OnInit {
     );
   }
 
-  getOrders(){
-    this.orderService.getOrders('?table='+this.tableCode).subscribe(
-      (res)=>this.orders=res,
+  getBarOrders(){
+    this.orderService.getBarOrders('/checkout/'+this.tableCode).subscribe(
+      (res)=>this.barOrders=res,
       (err)=>console.log(err),
       ()=>{
-        for(let i=0;i<this.orders.length;i++){
-          if(this.orders[i].status!="checked-out"){
-            this.ordersToUpdate.push(this.orders[i]);
-            if(!this.waiters[this.orders[i].waiter_id]){
-              this.waiters[this.orders[i].waiter_id]=this.orders[i].waiter_id;
-            }
-            for(let j=0;j<this.orders[i].items.length;j++){
-              this.total+=(this.orders[i].items[j].price*this.orders[i].items[j].amount);
-            }
-          } 
-        }
+        let total:number;
+        for (let  order of this.kitchenOrders){
+          this.recipt.ordersBarItems.concat(order.items);
+          total = order.items.reduce(function(prev, cur) {
+            return prev + cur.price;
+          }, 0);
+        } 
+        this.recipt.totalBar=total;
       }
-    ); 
+    )
   }
 
-
-  updateOrders(){
-    for(let i=0;i<this.ordersToUpdate.length;i++){
-        this.ordersToUpdate[i].status="checked-out";
-        if(this.ordersToUpdate[i].barOrderNumber){
-          this.orderService.updateBarOrder(this.ordersToUpdate[i]).subscribe(
-            (res)=>console.log(res),
-            (err)=>console.log(err),
-            ()=>this.socketService.socket.emit('barOrder')
-          );
-        }
-        if(this.ordersToUpdate[i].kitchenOrderNumber){
-          this.orderService.updateKitchenOrder(this.ordersToUpdate[i]).subscribe(
-            (res)=>console.log(res),
-            (err)=>console.log(err),
-            ()=>this.socketService.socket.emit('kitchenOrder')
-          );
-        }
+  getKitchenOrders(){
+    this.orderService.getKitchenOrders('/checkout/'+this.tableCode).subscribe(
+      (res)=>this.kitchenOrders=res,
+      (err)=>console.log(err),
+      ()=>{   
+        let total:number;
+        for (let  order of this.kitchenOrders){
+          this.recipt.ordersKitchenItems.concat(order.items);
+            total = order.items.reduce(function(prev, cur) {
+            return prev + cur.price;
+          }, 0);
+        } 
+        this.recipt.totalKitchen=total;
       }
+    )
   }
+ 
+
+
  
   updateJobs(waiters:any){
     console.log(waiters);
@@ -105,12 +109,6 @@ export class CheckOutComponent implements OnInit {
   }
 
 
-  checkOut(){
-    console.log("checkking out");
-    this.updateOrders();
-    this.updateTable();
-    this.updateJobs(this.waiters);
-  }
 
 
 

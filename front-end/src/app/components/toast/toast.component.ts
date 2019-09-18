@@ -38,9 +38,9 @@ export class ToastComponent implements OnInit {
       (err)=>console.log(err),
       ()=>{
         console.log("toaasasstiss");
-        console.log(this.messages);
+
         for(let i=0;i<this.messages.length;i++){
-          console.log(this.messages[i]);
+
           if(this.messages[i].status=="completed" ){
             this.pop(this.messages[i],"Kitchen");
           }
@@ -55,9 +55,9 @@ export class ToastComponent implements OnInit {
       (err)=>console.log(err),
       ()=>{
         console.log("toaasasstiss");
-        console.log(this.messages);
+
         for(let i=0;i<this.messages.length;i++){
-          console.log(this.messages[i]);
+
           if(this.messages[i].status=="completed" ){
             this.pop(this.messages[i],"Bar");
           }

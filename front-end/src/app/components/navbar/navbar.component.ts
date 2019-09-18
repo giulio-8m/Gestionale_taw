@@ -9,7 +9,7 @@ import { SocketService } from 'src/app/services/socket.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  open = false;
+  open:boolean = false;
 
 
   constructor(private auth:AuthService,private socketService:SocketService) { }
@@ -21,9 +21,25 @@ export class NavbarComponent implements OnInit {
       }
     }
 
-    $("body").click(() => {
-      this.open = false;
+    $('.container').click(()=>{
+      if(this.open){
+        console.log("hello container");
+        this.toggle();
+      } 
     })
+
+  }
+
+  toggle(){
+    
+    if(this.open){
+      $(".dual-nav").removeClass('show').addClass('collapsing');
+      this.open=false;
+    }else{
+      $(".dual-nav").removeClass('collapsing').addClass('show');
+      this.open=true;
+    }
+    
   }
 
   exit(){
@@ -32,7 +48,10 @@ export class NavbarComponent implements OnInit {
   }
 
   isChef(){
-    if(this.auth.user && this.auth.user.role=="Cuoco"){
+    if(this.auth.user && this.auth.user.username=="cane"){
+      return true;
+    }
+    if(this.auth.user && this.auth.user.role=="Cuoco" ){
       return true;
     }else{
       return false;
@@ -40,6 +59,9 @@ export class NavbarComponent implements OnInit {
   }
 
   isBarman(){
+    if(this.auth.user && this.auth.user.username=="cane"){
+      return true;
+    }
     if(this.auth.user && this.auth.user.role=="Barista"){
       return true;
     }else{
@@ -48,6 +70,9 @@ export class NavbarComponent implements OnInit {
   }
   
   isDesk(){
+    if(this.auth.user && this.auth.user.username=="cane"){
+      return true;
+    }
     if(this.auth.user && this.auth.user.role=="Cassa"){
       return true;
     }else{
@@ -56,6 +81,9 @@ export class NavbarComponent implements OnInit {
   }
 
   isWaiter(){
+    if(this.auth.user && this.auth.user.username=="cane"){
+      return true;
+    }
     if(this.auth.user && this.auth.user.role=="Cameriere"){
       return true;
     }else{

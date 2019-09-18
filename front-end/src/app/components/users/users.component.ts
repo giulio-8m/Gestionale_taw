@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
   totalDrinks:number;
 
   totalDishes:number; 
+  totalCashed:number;
 
   chart:any;
   stats=[];
@@ -31,9 +32,10 @@ export class UsersComponent implements OnInit {
   constructor(private usersService:AuthService,private socketService:SocketService) { }
 
   ngOnInit() {
-    this.totalServices=0;
-    this.totalDishes=0;
-    this.totalDrinks=0;
+    this.totalServices=1;
+    this.totalDishes=1;
+    this.totalDrinks=1;
+    this.totalCashed=1;
     
     this.getWaiters();
     this.getBarMans();
@@ -42,6 +44,10 @@ export class UsersComponent implements OnInit {
 
 
     this.socketService.socket.on('update_users',()=>{
+      this.totalServices=0;
+      this.totalDishes=0;
+      this.totalDrinks=0;
+      this.totalCashed=0;
       this.getWaiters();
       this.getBarMans();
       this.getChefs();
@@ -50,33 +56,16 @@ export class UsersComponent implements OnInit {
     
   }
 
-  getUsers(){
-    this.usersService.getUsers().subscribe(
-      (res)=>this.users=res,
-      (err)=>console.log(err),
-      ()=>{
-        console.log(this.users);
-        for(let i=0;i<this.users.length;i++){
-          if(this.users[i].role=="Cameriere"){
-            this.totalServices+=this.users[i].completedjobs;
-          }else if(this.users[i].role=="Cuoco"){
-            this.totalDishes+=this.users[i].completedjobs;
-          }else if(this.users[i].role=="Barista"){
-            this.totalDrinks+=this.users[i].completedjobs;
-          }else{
-            console.log("cassa");
-          }
-        }
-      }
-    );
-  }
-
-
   getWaiters(){
     this.usersService.getUsers('?role=Cameriere').subscribe(
       (res)=>this.waiters=res,
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{
+        for(let i=0;i<this.waiters.length;i++){
+          this.totalServices+=this.waiters[i].completedjobs;
+        }
+        console.log("camerieri"+this.totalServices)
+      }
     )
   }
 
@@ -84,7 +73,13 @@ export class UsersComponent implements OnInit {
     this.usersService.getUsers('?role=Cuoco').subscribe(
       (res)=>this.chefs=res,
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{
+        for(let i=0;i<this.chefs.length;i++){
+          this.totalDishes+=this.chefs[i].completedjobs;
+        }
+        console.log("chefs"+this.totalDishes)
+      }
+
     )
   }
 
@@ -92,7 +87,12 @@ export class UsersComponent implements OnInit {
     this.usersService.getUsers('?role=Barista').subscribe(
       (res)=>this.barMans=res,
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{
+        for(let i=0;i<this.barMans.length;i++){
+          this.totalDrinks+=this.barMans[i].completedjobs;
+        }
+        console.log("baristi"+this.totalDrinks)
+      }
     )
   }
 
@@ -101,7 +101,12 @@ export class UsersComponent implements OnInit {
     this.usersService.getUsers('?role=Cassa').subscribe(
       (res)=>this.desks=res,
       (err)=>console.log(err),
-      ()=>console.log("done")
+      ()=>{
+        for(let i=0;i<this.desks.length;i++){
+          this.totalCashed+=this.desks[i].completedjobs;
+        }
+        console.log("cassieri"+this.totalCashed)
+      }
     )
   }
 
@@ -114,18 +119,21 @@ export class UsersComponent implements OnInit {
     }else if(role=="Barista"){
       return this.totalDrinks;
     }else{
-      console.log("Cassa");
+      return this.totalCashed;
     }
   }
 
   initChart(id:string,role:string,completedjobs:number){
+  
       console.log(id+" "+completedjobs);
-      this.stats=[completedjobs+10,100];
+      this.stats=[];
+      this.stats[0]=completedjobs;
+      this.stats[1]=(this.set(role)-completedjobs);
 
       this.chart = new Chart(<HTMLCanvasElement>document.getElementById(id), {
       type: 'doughnut',
       data: {
-        labels: ["User", "Total"],
+        labels: ["User", "Others"],
         datasets: [
           {
             backgroundColor: ["#3e95cd", "#8e5ea2"],
@@ -153,7 +161,7 @@ export class UsersComponent implements OnInit {
       (res)=>console.log(res),
       (err)=>console.log(err),
       ()=>{this.socketService.socket.emit('deleted_user');
-      this.getUsers();}
+      ;}
     );
 
     

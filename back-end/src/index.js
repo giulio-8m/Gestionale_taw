@@ -11,6 +11,7 @@ const usersRoute = require('./routes/users.route');
 const tablesRoute= require('./routes/tables.route');
 const ordersRoute= require('./routes/orders.route');
 const menuRoute= require('./routes/menu.route');
+const recipsRoute= require('./routes/recipts.route')
 
 const app=express();
 const port=process.env.PORT || 3000;
@@ -98,6 +99,7 @@ app.use(tablesRoute);
 app.use(usersRoute);
 app.use(menuRoute);
 app.use(ordersRoute);
+app.use(recipsRoute);
 
 
 //handling unexisting api request

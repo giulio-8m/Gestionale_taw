@@ -21,7 +21,7 @@
             </div>
             <div *ngFor="let order of orders">
                 <div *ngIf="order.status!='checked-out'">
-                    <div  class="row" *ngFor="let item of order.items">
+                    <div  class="row" *ngFor="let item of recipt.items">
                         <div class="col-6">
                         <h5>{{item.name}}</h5> 
                         </div>
@@ -35,6 +35,20 @@
                             {{item.price * item.amount}}
                         </div>
                     </div>
+                    <div  class="row" *ngFor="let item of recipt.items">
+                            <div class="col-6">
+                            <h5>{{item.name}}</h5> 
+                            </div>
+                            <div class="col-2">
+                                {{item.amount}}
+                            </div>
+                            <div class="col-2">
+                                {{item.price}}
+                            </div>
+                            <div class="col-2">
+                                {{item.price * item.amount}}
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -43,7 +57,7 @@
             <h3>{{total}}$</h3>
         </div>
     </div>
-
+    <br>
     <div class=" justify-content-between d-flex">
 
             <button routerLink="/tables-desk" class="btn btn-danger" ><i class="fas fa-reply fa-3x"><h4>GoBack</h4></i></button>

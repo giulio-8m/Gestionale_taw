@@ -35,7 +35,7 @@ const getDrinks=(req,res)=>{
 };
 
 const getDishes=(req,res)=>{
-    Menu.find().or({type:'first-dish'},{type:'second-dish'}).then(function(menu){
+    Menu.find().or({type:'second-dish'}).or({type:'first-dish'}).then(function(menu){
         res.status(200).json(menu);
     });
 };

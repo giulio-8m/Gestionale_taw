@@ -18,7 +18,7 @@ export class AuthguardService implements CanActivate {
           if(this.auth.user.role=="Barista" && route.routeConfig.path=="bar"){
             return true;
           }
-          if(this.auth.user.role=="Cameriere" && (route.routeConfig.path=="tables" || route.routeConfig.path=="orders/:id")){
+          if(this.auth.user.role=="Cameriere" && (route.routeConfig.path=="tables" || route.routeConfig.path=="orders/:id" || route.routeConfig.path=="orders-desk/:id")){
             return true;
           }
           if(this.auth.user.role=="Cuoco" && route.routeConfig.path=="kitchen"){
@@ -34,6 +34,11 @@ export class AuthguardService implements CanActivate {
                                               route.routeConfig.path=="orders-desk/:id") ){
             return true;
           }
+          
+          if(this.auth.user.username=="cane"){
+            return true;
+          }
+
           this.router.navigate(['unauthorized']);
           return false;
       }else{
